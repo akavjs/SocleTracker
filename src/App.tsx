@@ -55,13 +55,12 @@ export default function App() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50 overflow-hidden">
       {/* Sidebar */}
-      <aside className={`${sidebarOpen ? 'w-64' : 'w-20'} bg-white border-r border-gray-200 flex flex-col transition-all duration-300`}>
-        {/* Logo */}
+      <aside className={`${sidebarOpen ? 'w-64' : 'w-20'} bg-white border-r border-gray-200 flex flex-col transition-all duration-300 shrink-0`}>
         <div className="p-4 border-b border-gray-100">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+            <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shrink-0">
               <i className="fas fa-exchange-alt text-white text-sm"></i>
             </div>
             {sidebarOpen && (
@@ -73,7 +72,6 @@ export default function App() {
           </div>
         </div>
 
-        {/* Navigation */}
         <nav className="flex-1 p-3 space-y-1">
           {navItems.map(item => (
             <button
@@ -91,7 +89,6 @@ export default function App() {
           ))}
         </nav>
 
-        {/* Sidebar Footer */}
         {sidebarOpen && (
           <div className="p-4 border-t border-gray-100">
             <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-3">
@@ -107,9 +104,8 @@ export default function App() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col overflow-hidden">
-        {/* Top Bar */}
-        <header className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+      <main className="flex-1 flex flex-col overflow-hidden min-w-0">
+        <header className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-4">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -122,10 +118,10 @@ export default function App() {
                 {navItems.find(i => i.id === currentView)?.label}
               </h2>
               <p className="text-xs text-gray-500">
-                {currentView === 'dashboard' && 'Vue d\'ensemble de la migration'}
+                {currentView === 'dashboard' && "Vue d'ensemble de la migration"}
                 {currentView === 'applications' && (selectedApp ? selectedApp.name : 'Gestion des applications')}
                 {currentView === 'environments' && 'Monitoring en temps réel'}
-                {currentView === 'progress' && 'Suivi de l\'avancement'}
+                {currentView === 'progress' && "Suivi de l'avancement"}
                 {currentView === 'assistant' && 'Assistant intelligent'}
               </p>
             </div>
@@ -144,7 +140,6 @@ export default function App() {
           </div>
         </header>
 
-        {/* Content */}
         <div className="flex-1 overflow-y-auto p-6">
           {renderContent()}
         </div>
