@@ -55,69 +55,104 @@ export default function App() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50 overflow-hidden">
+    <div style={{ display: 'flex', height: '100vh', background: '#f9fafb', overflow: 'hidden' }}>
       {/* Sidebar */}
-      <aside className={`${sidebarOpen ? 'w-64' : 'w-20'} bg-white border-r border-gray-200 flex flex-col transition-all duration-300 shrink-0`}>
-        <div className="p-4 border-b border-gray-100">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shrink-0">
-              <i className="fas fa-exchange-alt text-white text-sm"></i>
+      <aside style={{ 
+        width: sidebarOpen ? '256px' : '80px', 
+        background: 'white', 
+        borderRight: '1px solid #e5e7eb', 
+        display: 'flex', 
+        flexDirection: 'column',
+        transition: 'width 0.3s',
+        flexShrink: 0
+      }}>
+        <div style={{ padding: '16px', borderBottom: '1px solid #f3f4f6' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ 
+              width: '40px', 
+              height: '40px', 
+              background: 'linear-gradient(135deg, #4f46e5, #7c3aed)', 
+              borderRadius: '12px', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              flexShrink: 0
+            }}>
+              <i className="fas fa-exchange-alt" style={{ color: 'white', fontSize: '14px' }}></i>
             </div>
             {sidebarOpen && (
               <div>
-                <h1 className="font-bold text-gray-900 text-sm">SocleTracker</h1>
-                <p className="text-xs text-gray-500">Migration Monitor</p>
+                <h1 style={{ fontWeight: 'bold', color: '#111827', fontSize: '14px' }}>SocleTracker</h1>
+                <p style={{ fontSize: '12px', color: '#6b7280' }}>Migration Monitor</p>
               </div>
             )}
           </div>
         </div>
 
-        <nav className="flex-1 p-3 space-y-1">
+        <nav style={{ flex: 1, padding: '12px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
           {navItems.map(item => (
             <button
               key={item.id}
               onClick={() => { setCurrentView(item.id); setSelectedApp(null); }}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                currentView === item.id
-                  ? 'bg-indigo-50 text-indigo-600'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-              }`}
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '10px 12px',
+                borderRadius: '8px',
+                fontSize: '14px',
+                fontWeight: 500,
+                border: 'none',
+                cursor: 'pointer',
+                background: currentView === item.id ? '#eef2ff' : 'transparent',
+                color: currentView === item.id ? '#4f46e5' : '#4b5563',
+                transition: 'all 0.2s'
+              }}
             >
-              <i className={`fas ${item.icon} w-5 text-center ${currentView === item.id ? 'text-indigo-600' : 'text-gray-400'}`}></i>
+              <i className={`fas ${item.icon}`} style={{ width: '20px', textAlign: 'center' }}></i>
               {sidebarOpen && <span>{item.label}</span>}
             </button>
           ))}
         </nav>
 
         {sidebarOpen && (
-          <div className="p-4 border-t border-gray-100">
-            <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-3">
-              <p className="text-xs font-medium text-indigo-700">Migration OCP 4.14</p>
-              <p className="text-xs text-gray-500 mt-1">Q1 2026</p>
-              <div className="mt-2 w-full bg-white/50 rounded-full h-1.5">
-                <div className="h-1.5 rounded-full bg-indigo-500" style={{ width: '51%' }}></div>
+          <div style={{ padding: '16px', borderTop: '1px solid #f3f4f6' }}>
+            <div style={{ background: 'linear-gradient(135deg, #eef2ff, #f5f3ff)', borderRadius: '8px', padding: '12px' }}>
+              <p style={{ fontSize: '12px', fontWeight: 500, color: '#4338ca' }}>Migration OCP 4.14</p>
+              <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '4px' }}>Q1 2026</p>
+              <div style={{ marginTop: '8px', width: '100%', background: 'rgba(255,255,255,0.5)', borderRadius: '4px', height: '6px' }}>
+                <div style={{ height: '6px', borderRadius: '4px', background: '#6366f1', width: '51%' }}></div>
               </div>
-              <p className="text-xs text-indigo-600 font-medium mt-1">51% complété</p>
+              <p style={{ fontSize: '12px', color: '#4f46e5', fontWeight: 500, marginTop: '4px' }}>51% complété</p>
             </div>
           </div>
         )}
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col overflow-hidden min-w-0">
-        <header className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-4">
+      <main style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', minWidth: 0 }}>
+        <header style={{ 
+          background: 'white', 
+          borderBottom: '1px solid #e5e7eb', 
+          padding: '12px 24px', 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'space-between',
+          flexShrink: 0
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              style={{ padding: '8px', background: 'transparent', border: 'none', cursor: 'pointer', borderRadius: '8px' }}
             >
-              <i className="fas fa-bars text-gray-600"></i>
+              <i className="fas fa-bars" style={{ color: '#4b5563' }}></i>
             </button>
             <div>
-              <h2 className="font-semibold text-gray-900">
+              <h2 style={{ fontWeight: 600, color: '#111827' }}>
                 {navItems.find(i => i.id === currentView)?.label}
               </h2>
-              <p className="text-xs text-gray-500">
+              <p style={{ fontSize: '12px', color: '#6b7280' }}>
                 {currentView === 'dashboard' && "Vue d'ensemble de la migration"}
                 {currentView === 'applications' && (selectedApp ? selectedApp.name : 'Gestion des applications')}
                 {currentView === 'environments' && 'Monitoring en temps réel'}
@@ -126,21 +161,21 @@ export default function App() {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
-              <i className="fas fa-bell text-gray-400 text-sm"></i>
-              <span className="w-2 h-2 bg-red-500 rounded-full"></span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#f9fafb', borderRadius: '8px', padding: '8px 12px' }}>
+              <i className="fas fa-bell" style={{ color: '#9ca3af', fontSize: '14px' }}></i>
+              <span style={{ width: '8px', height: '8px', background: '#ef4444', borderRadius: '50%' }}></span>
             </div>
-            <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
-              <div className="w-7 h-7 bg-indigo-100 rounded-full flex items-center justify-center">
-                <i className="fas fa-user text-indigo-600 text-xs"></i>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#f9fafb', borderRadius: '8px', padding: '8px 12px' }}>
+              <div style={{ width: '28px', height: '28px', background: '#e0e7ff', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <i className="fas fa-user" style={{ color: '#4f46e5', fontSize: '12px' }}></i>
               </div>
-              {sidebarOpen && <span className="text-sm text-gray-700">Admin</span>}
+              {sidebarOpen && <span style={{ fontSize: '14px', color: '#374151' }}>Admin</span>}
             </div>
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto p-6">
+        <div style={{ flex: 1, overflow: 'auto', padding: '24px' }}>
           {renderContent()}
         </div>
       </main>
