@@ -1,77 +1,55 @@
 import { useState } from 'react';
+import { UserProvider, useUser } from './context/UserContext';
 import Dashboard from './components/Dashboard';
-import ApplicationList from './components/ApplicationList';
-import ApplicationDetail from './components/ApplicationDetail';
+import MyApplications from './components/MyApplications';
 import EnvironmentMonitor from './components/EnvironmentMonitor';
 import MigrationProgress from './components/MigrationProgress';
 import LLMChat from './components/LLMChat';
 import ImportExport from './components/ImportExport';
 import AdminDashboard from './components/AdminDashboard';
-import GitConfig from './components/GitConfig';
-import LLMConfig from './components/LLMConfig';
-import { applications, Application } from './data/applications';
+import MyGitConfig from './components/MyGitConfig';
+import MyLLMConfig from './components/MyLLMConfig';
+import UserProfile from './components/UserProfile';
 
-type View = 'dashboard' | 'applications' | 'environments' | 'progress' | 'assistant' | 'import-export' | 'admin' | 'git-config' | 'llm-config';
-type UserRole = 'admin' | 'user';
+type View = 'dashboard' | 'my-apps' | 'environments' | 'progress' | 'assistant' | 'import-export' | 'admin' | 'my-git' | 'my-llm' | 'profile';
 
-export default function App() {
+function AppContent() {
+  const { currentUser, users, setCurrentUser } = useUser();
   const [currentView, setCurrentView] = useState<View>('dashboard');
-  const [selectedApp, setSelectedApp] = useState<Application | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [userRole, setUserRole] = useState<UserRole>('admin');
   const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   const navItems = [
-    { id: 'dashboard' as View, label: 'Tableau de bord', icon: 'fa-th-large', roles: ['admin', 'user'] as UserRole[] },
-    { id: 'applications' as View, label: 'Applications', icon: 'fa-cubes', roles: ['admin', 'user'] as UserRole[] },
-    { id: 'environments' as View, label: 'Environnements', icon: 'fa-server', roles: ['admin', 'user'] as UserRole[] },
-    { id: 'progress' as View, label: 'Progression', icon: 'fa-chart-line', roles: ['admin', 'user'] as UserRole[] },
-    { id: 'assistant' as View, label: 'Assistant IA', icon: 'fa-robot', roles: ['admin', 'user'] as UserRole[] },
-    { id: 'import-export' as View, label: 'Import/Export', icon: 'fa-file-import', roles: ['admin', 'user'] as UserRole[] },
-    { id: 'admin' as View, label: 'Administration', icon: 'fa-user-shield', roles: ['admin'] as UserRole[] },
-    { id: 'git-config' as View, label: 'Configuration Git', icon: 'fa-code-branch', roles: ['admin'] as UserRole[] },
-    { id: 'llm-config' as View, label: 'Configuration IA', icon: 'fa-cogs', roles: ['admin'] as UserRole[] },
+    { id: 'dashboard' as View, label: 'Tableau de bord', icon: 'fa-th-large', section: 'general' },
+    { id: 'my-apps' as View, label: 'Mes applications', icon: 'fa-cubes', section: 'general' },
+    { id: 'environments' as View, label: 'Environnements', icon: 'fa-server', section: 'general' },
+    { id: 'progress' as View, label: 'Progression', icon: 'fa-chart-line', section: 'general' },
+    { id: 'assistant' as View, label: 'Assistant IA', icon: 'fa-robot', section: 'general' },
+    { id: 'import-export' as View, label: 'Import/Export', icon: 'fa-file-import', section: 'general' },
+    { id: 'profile' as View, label: 'Mon profil', icon: 'fa-user-circle', section: 'personal' },
+    { id: 'my-git' as View, label: 'Mes connexions Git', icon: 'fa-code-branch', section: 'personal' },
+    { id: 'my-llm' as View, label: 'Mon assistant IA', icon: 'fa-brain', section: 'personal' },
+    { id: 'admin' as View, label: 'Administration', icon: 'fa-user-shield', section: 'admin', adminOnly: true },
   ];
 
-  const filteredNavItems = navItems.filter(item => item.roles.includes(userRole));
+  const filteredNavItems = navItems.filter(item => {
+    if (item.adminOnly && currentUser?.role !== 'admin') return false;
+    return true;
+  });
 
   const renderContent = () => {
-    if (currentView === 'applications' && selectedApp) {
-      return (
-        <ApplicationDetail
-          application={selectedApp}
-          onBack={() => setSelectedApp(null)}
-        />
-      );
-    }
-
     switch (currentView) {
-      case 'dashboard':
-        return <Dashboard />;
-      case 'applications':
-        return (
-          <ApplicationList
-            applications={applications}
-            onSelect={setSelectedApp}
-            selectedId={selectedApp?.id}
-          />
-        );
-      case 'environments':
-        return <EnvironmentMonitor />;
-      case 'progress':
-        return <MigrationProgress />;
-      case 'assistant':
-        return <LLMChat />;
-      case 'import-export':
-        return <ImportExport />;
-      case 'admin':
-        return userRole === 'admin' ? <AdminDashboard /> : <div>Accès refusé</div>;
-      case 'git-config':
-        return userRole === 'admin' ? <GitConfig /> : <div>Accès refusé</div>;
-      case 'llm-config':
-        return userRole === 'admin' ? <LLMConfig /> : <div>Accès refusé</div>;
-      default:
-        return <Dashboard />;
+      case 'dashboard': return <Dashboard />;
+      case 'my-apps': return <MyApplications />;
+      case 'environments': return <EnvironmentMonitor />;
+      case 'progress': return <MigrationProgress />;
+      case 'assistant': return <LLMChat />;
+      case 'import-export': return <ImportExport />;
+      case 'profile': return <UserProfile />;
+      case 'my-git': return <MyGitConfig />;
+      case 'my-llm': return <MyLLMConfig />;
+      case 'admin': return currentUser?.role === 'admin' ? <AdminDashboard /> : <div>Accès refusé</div>;
+      default: return <Dashboard />;
     }
   };
 
@@ -109,60 +87,67 @@ export default function App() {
               SocleTracker
             </h1>
             <p style={{ color: '#6b7280', fontSize: '14px' }}>
-              Connectez-vous pour continuer
+              Choisissez votre profil pour continuer
             </p>
           </div>
 
-          <div style={{ marginBottom: '24px' }}>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: '#374151', marginBottom: '8px' }}>
-              Rôle
-            </label>
-            <div style={{ display: 'flex', gap: '12px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
+            {users.map(user => (
               <button
-                onClick={() => setUserRole('admin')}
+                key={user.id}
+                onClick={() => setCurrentUser(user)}
                 style={{
-                  flex: 1,
-                  padding: '12px',
-                  borderRadius: '8px',
-                  border: userRole === 'admin' ? '2px solid #4f46e5' : '1px solid #d1d5db',
-                  background: userRole === 'admin' ? '#eef2ff' : 'white',
+                  padding: '16px',
+                  borderRadius: '12px',
+                  border: currentUser?.id === user.id ? '2px solid #4f46e5' : '1px solid #d1d5db',
+                  background: currentUser?.id === user.id ? '#eef2ff' : 'white',
                   cursor: 'pointer',
-                  fontWeight: 500,
-                  fontSize: '14px',
-                  color: userRole === 'admin' ? '#4f46e5' : '#374151'
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  textAlign: 'left'
                 }}
               >
-                👑 Administrateur
-              </button>
-              <button
-                onClick={() => setUserRole('user')}
-                style={{
-                  flex: 1,
-                  padding: '12px',
+                <div style={{
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '50%',
+                  background: user.role === 'admin' ? '#fef3c7' : '#e0e7ff',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  <i className="fas fa-user" style={{ color: user.role === 'admin' ? '#f59e0b' : '#4f46e5' }}></i>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ fontWeight: 600, color: '#111827', fontSize: '14px' }}>{user.name}</p>
+                  <p style={{ fontSize: '12px', color: '#6b7280' }}>{user.email}</p>
+                </div>
+                <span style={{
+                  padding: '4px 8px',
                   borderRadius: '8px',
-                  border: userRole === 'user' ? '2px solid #4f46e5' : '1px solid #d1d5db',
-                  background: userRole === 'user' ? '#eef2ff' : 'white',
-                  cursor: 'pointer',
+                  fontSize: '11px',
                   fontWeight: 500,
-                  fontSize: '14px',
-                  color: userRole === 'user' ? '#4f46e5' : '#374151'
-                }}
-              >
-                👤 Utilisateur
+                  background: user.role === 'admin' ? '#fef3c7' : '#dbeafe',
+                  color: user.role === 'admin' ? '#92400e' : '#1e40af'
+                }}>
+                  {user.role === 'admin' ? 'Admin' : 'User'}
+                </span>
               </button>
-            </div>
+            ))}
           </div>
 
           <button
             onClick={() => setIsLoggedIn(true)}
+            disabled={!currentUser}
             style={{
               width: '100%',
               padding: '12px',
               borderRadius: '8px',
               border: 'none',
-              background: '#4f46e5',
-              color: 'white',
-              cursor: 'pointer',
+              background: currentUser ? '#4f46e5' : '#e5e7eb',
+              color: currentUser ? 'white' : '#9ca3af',
+              cursor: currentUser ? 'pointer' : 'not-allowed',
               fontWeight: 500,
               fontSize: '14px'
             }}
@@ -173,6 +158,10 @@ export default function App() {
       </div>
     );
   }
+
+  const generalItems = filteredNavItems.filter(i => i.section === 'general');
+  const personalItems = filteredNavItems.filter(i => i.section === 'personal');
+  const adminItems = filteredNavItems.filter(i => i.section === 'admin');
 
   return (
     <div style={{ display: 'flex', height: '100vh', background: '#f9fafb', overflow: 'hidden' }}>
@@ -210,10 +199,16 @@ export default function App() {
         </div>
 
         <nav style={{ flex: 1, padding: '12px', display: 'flex', flexDirection: 'column', gap: '4px', overflowY: 'auto' }}>
-          {filteredNavItems.map(item => (
+          {/* General Section */}
+          {sidebarOpen && (
+            <p style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', padding: '8px 12px 4px', letterSpacing: '0.05em' }}>
+              Général
+            </p>
+          )}
+          {generalItems.map(item => (
             <button
               key={item.id}
-              onClick={() => { setCurrentView(item.id); setSelectedApp(null); }}
+              onClick={() => setCurrentView(item.id)}
               style={{
                 width: '100%',
                 display: 'flex',
@@ -235,17 +230,98 @@ export default function App() {
               {sidebarOpen && <span>{item.label}</span>}
             </button>
           ))}
+
+          {/* Personal Section */}
+          {sidebarOpen && (
+            <p style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', padding: '16px 12px 4px', letterSpacing: '0.05em' }}>
+              Personnel
+            </p>
+          )}
+          {!sidebarOpen && <div style={{ height: '16px' }}></div>}
+          {personalItems.map(item => (
+            <button
+              key={item.id}
+              onClick={() => setCurrentView(item.id)}
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '10px 12px',
+                borderRadius: '8px',
+                fontSize: '14px',
+                fontWeight: 500,
+                border: 'none',
+                cursor: 'pointer',
+                background: currentView === item.id ? '#eef2ff' : 'transparent',
+                color: currentView === item.id ? '#4f46e5' : '#4b5563',
+                transition: 'all 0.2s',
+                textAlign: 'left'
+              }}
+            >
+              <i className={`fas ${item.icon}`} style={{ width: '20px', textAlign: 'center' }}></i>
+              {sidebarOpen && <span>{item.label}</span>}
+            </button>
+          ))}
+
+          {/* Admin Section */}
+          {adminItems.length > 0 && (
+            <>
+              {sidebarOpen && (
+                <p style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', padding: '16px 12px 4px', letterSpacing: '0.05em' }}>
+                  Administration
+                </p>
+              )}
+              {!sidebarOpen && <div style={{ height: '16px' }}></div>}
+              {adminItems.map(item => (
+                <button
+                  key={item.id}
+                  onClick={() => setCurrentView(item.id)}
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    padding: '10px 12px',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    border: 'none',
+                    cursor: 'pointer',
+                    background: currentView === item.id ? '#eef2ff' : 'transparent',
+                    color: currentView === item.id ? '#4f46e5' : '#4b5563',
+                    transition: 'all 0.2s',
+                    textAlign: 'left'
+                  }}
+                >
+                  <i className={`fas ${item.icon}`} style={{ width: '20px', textAlign: 'center' }}></i>
+                  {sidebarOpen && <span>{item.label}</span>}
+                </button>
+              ))}
+            </>
+          )}
         </nav>
 
-        {sidebarOpen && (
+        {sidebarOpen && currentUser && (
           <div style={{ padding: '16px', borderTop: '1px solid #f3f4f6' }}>
-            <div style={{ background: 'linear-gradient(135deg, #eef2ff, #f5f3ff)', borderRadius: '8px', padding: '12px', marginBottom: '12px' }}>
-              <p style={{ fontSize: '12px', fontWeight: 500, color: '#4338ca' }}>Migration OCP 4.14</p>
-              <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '4px' }}>Q1 2026</p>
-              <div style={{ marginTop: '8px', width: '100%', background: 'rgba(255,255,255,0.5)', borderRadius: '4px', height: '6px' }}>
-                <div style={{ height: '6px', borderRadius: '4px', background: '#6366f1', width: '51%' }}></div>
+            <div style={{ background: '#f9fafb', borderRadius: '8px', padding: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                <div style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  background: currentUser.role === 'admin' ? '#fef3c7' : '#e0e7ff',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  <i className="fas fa-user" style={{ color: currentUser.role === 'admin' ? '#f59e0b' : '#4f46e5', fontSize: '12px' }}></i>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ fontSize: '13px', fontWeight: 500, color: '#111827' }}>{currentUser.name}</p>
+                  <p style={{ fontSize: '11px', color: '#6b7280' }}>{currentUser.role === 'admin' ? 'Administrateur' : 'Utilisateur'}</p>
+                </div>
               </div>
-              <p style={{ fontSize: '12px', color: '#4f46e5', fontWeight: 500, marginTop: '4px' }}>51% complété</p>
             </div>
           </div>
         )}
@@ -274,58 +350,47 @@ export default function App() {
                 {navItems.find(i => i.id === currentView)?.label}
               </h2>
               <p style={{ fontSize: '12px', color: '#6b7280' }}>
-                {currentView === 'dashboard' && "Vue d'ensemble de la migration"}
-                {currentView === 'applications' && (selectedApp ? selectedApp.name : 'Gestion des applications')}
+                {currentView === 'dashboard' && "Vue d'ensemble"}
+                {currentView === 'my-apps' && 'Vos applications personnelles'}
                 {currentView === 'environments' && 'Monitoring en temps réel'}
                 {currentView === 'progress' && "Suivi de l'avancement"}
-                {currentView === 'assistant' && 'Assistant intelligent'}
+                {currentView === 'assistant' && 'Assistant intelligent partagé'}
                 {currentView === 'import-export' && 'Importez et exportez vos données'}
+                {currentView === 'profile' && 'Gérez votre profil'}
+                {currentView === 'my-git' && 'Vos connexions GitLab/GitHub'}
+                {currentView === 'my-llm' && 'Configurez votre assistant IA'}
                 {currentView === 'admin' && 'Gestion des utilisateurs'}
-                {currentView === 'git-config' && 'Connexions GitLab/GitHub'}
-                {currentView === 'llm-config' && 'Configuration du modèle IA'}
               </p>
             </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#f9fafb', borderRadius: '8px', padding: '8px 12px' }}>
-              <i className="fas fa-bell" style={{ color: '#9ca3af', fontSize: '14px' }}></i>
-              <span style={{ width: '8px', height: '8px', background: '#ef4444', borderRadius: '50%' }}></span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#f9fafb', borderRadius: '8px', padding: '8px 12px' }}>
-              <div style={{ width: '28px', height: '28px', background: userRole === 'admin' ? '#fef3c7' : '#e0e7ff', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <i className="fas fa-user" style={{ color: userRole === 'admin' ? '#f59e0b' : '#4f46e5', fontSize: '12px' }}></i>
-              </div>
-              {sidebarOpen && (
-                <div>
-                  <span style={{ fontSize: '14px', color: '#374151', fontWeight: 500 }}>
-                    {userRole === 'admin' ? 'Admin' : 'User'}
-                  </span>
-                  <select
-                    value={userRole}
-                    onChange={(e) => setUserRole(e.target.value as UserRole)}
-                    style={{
-                      marginLeft: '8px',
-                      padding: '2px 8px',
-                      borderRadius: '4px',
-                      border: '1px solid #d1d5db',
-                      fontSize: '12px',
-                      background: 'white'
-                    }}
-                  >
-                    <option value="admin">Admin</option>
-                    <option value="user">User</option>
-                  </select>
-                </div>
-              )}
-            </div>
             <button
-              onClick={() => setIsLoggedIn(false)}
+              onClick={() => setCurrentView('profile')}
               style={{
                 padding: '8px 16px',
                 borderRadius: '8px',
                 border: '1px solid #d1d5db',
                 background: 'white',
                 color: '#374151',
+                cursor: 'pointer',
+                fontWeight: 500,
+                fontSize: '14px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}
+            >
+              <i className="fas fa-user-circle"></i>
+              {sidebarOpen && currentUser?.name}
+            </button>
+            <button
+              onClick={() => { setIsLoggedIn(false); setCurrentUser(null); }}
+              style={{
+                padding: '8px 16px',
+                borderRadius: '8px',
+                border: '1px solid #fecaca',
+                background: 'white',
+                color: '#ef4444',
                 cursor: 'pointer',
                 fontWeight: 500,
                 fontSize: '14px',
@@ -345,5 +410,13 @@ export default function App() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <UserProvider>
+      <AppContent />
+    </UserProvider>
   );
 }
