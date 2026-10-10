@@ -1,2 +1,760 @@
-# SocleTracker
-Suivi Migration Applications
+# 🚀 SocleTracker
+
+**Application de suivi de migration d'applications Kubernetes**
+
+SocleTracker est une solution complète pour piloter la migration d'applications d'un socle Kubernetes vers un autre (ex: Kubernetes 1.24 → OpenShift 4.14). Elle offre un monitoring en temps réel, une gestion des charts Helm, et un assistant IA intelligent.
+
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![React](https://img.shields.io/badge/React-18.2-61dafb)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178c6)
+![License](https://img.shields.io/badge/license-MIT-green)
+
+## 📋 Table des matières
+
+- [Fonctionnalités](#-fonctionnalités)
+- [Architecture](#-architecture)
+- [Prérequis](#-prérequis)
+- [Installation](#-installation)
+- [Utilisation](#-utilisation)
+- [Configuration](#-configuration)
+- [Déploiement](#-déploiement)
+- [API et Intégrations](#-api-et-intégrations)
+- [Développement](#-développement)
+- [FAQ](#-faq)
+- [Contribution](#-contribution)
+- [Licence](#-licence)
+
+---
+
+## ✨ Fonctionnalités
+
+### 📊 Tableau de bord
+- Vue d'ensemble de la migration avec statistiques en temps réel
+- Progression globale et par application
+- Alertes sur les applications critiques et problèmes de charts Helm
+- Historique des événements récents
+
+### 📦 Gestion des applications
+- Liste détaillée des applications à migrer
+- Suivi de la progression par application
+- Gestion des environnements (DEV, STAGING, PREPROD, PROD)
+- Monitoring des pods et replicas en temps réel
+
+### 🔍 Monitoring des environnements
+- État en temps réel des déploiements
+- Statut des pods (running, failed, crashloop)
+- Détection automatique des incidents
+- Filtrage par environnement
+
+### 📈 Suivi de la progression
+- Pipeline de migration en 6 phases
+- Barres de progression par application
+- Calendrier prévisionnel
+- Statistiques globales
+
+### 🤖 Assistant IA
+- Chatbot intelligent pour analyser l'état de la migration
+- Réponses contextuelles sur les applications, environnements, charts Helm
+- Recommandations automatiques
+- Configuration personnalisable (OpenAI, Anthropic, Ollama, Custom)
+
+### 🔗 Intégration Git
+- Connexion à GitLab et GitHub
+- Vérification automatique des charts Helm
+- Détection des ressources manquantes ou obsolètes
+- Synchronisation en temps réel
+
+### 👥 Système multi-utilisateurs
+- Profils utilisateurs avec espace personnel
+- Gestion des applications personnelles
+- Configurations Git et IA isolées par utilisateur
+- Rôles : Administrateur et Utilisateur
+
+### 📥 Import/Export
+- Export en JSON ou CSV
+- Import depuis fichiers JSON ou CSV
+- Validation automatique des données
+- Mapping intelligent des colonnes CSV
+
+---
+
+## 🏗️ Architecture
+
+```
+socletracker/
+├── src/
+│   ├── components/           # Composants React
+│   │   ├── Dashboard.tsx
+│   │   ├── ApplicationList.tsx
+│   │   ├── ApplicationDetail.tsx
+│   │   ├── EnvironmentMonitor.tsx
+│   │   ├── MigrationProgress.tsx
+│   │   ├── LLMChat.tsx
+│   │   ├── ImportExport.tsx
+│   │   ├── AdminDashboard.tsx
+│   │   ├── MyApplications.tsx
+│   │   ├── MyGitConfig.tsx
+│   │   ├── MyLLMConfig.tsx
+│   │   └── UserProfile.tsx
+│   ├── context/
+│   │   └── UserContext.tsx    # Gestion de l'état utilisateur
+│   ├── data/
+│   │   └── applications.ts  # Données et types
+│   ├── App.tsx               # Composant principal
+│   ├── main.tsx              # Point d'entrée
+│   └── index.css             # Styles globaux
+├── public/                   # Assets statiques
+├── dist/                     # Build de production
+├── index.html
+├── package.json
+├── tsconfig.json
+├── vite.config.js
+└── README.md
+```
+
+### Technologies utilisées
+- **React 18.2** - Framework UI
+- **TypeScript 5.0** - Typage statique
+- **Vite 6.4** - Build tool
+- **Tailwind CSS 4.1** - Styling
+- **Lucide React** - Icônes
+- **Framer Motion** - Animations
+
+---
+
+## 📋 Prérequis
+
+### Système
+- **Node.js** >= 18.0.0
+- **npm** >= 9.0.0 (ou yarn >= 1.22.0)
+- **Git** >= 2.30.0
+
+### Navigateurs supportés
+- Chrome >= 90
+- Firefox >= 88
+- Safari >= 14
+- Edge >= 90
+
+### Pour le déploiement
+- **Docker** >= 20.10 (optionnel)
+- **Nginx** >= 1.18 (pour production)
+- **Serveur web** avec support HTTPS
+
+### Pour les intégrations (optionnel)
+- Compte **GitLab** avec token d'accès
+- Compte **GitHub** avec Personal Access Token
+- Clé API **OpenAI** ou **Anthropic** pour l'assistant IA
+
+---
+
+## 🚀 Installation
+
+### 1. Cloner le repository
+
+```bash
+git clone https://github.com/votre-org/socletracker.git
+cd socletracker
+```
+
+### 2. Installer les dépendances
+
+```bash
+npm install
+```
+
+ou avec yarn :
+
+```bash
+yarn install
+```
+
+### 3. Configurer les variables d'environnement
+
+Créez un fichier `.env` à la racine du projet :
+
+```bash
+# Configuration GitLab (optionnel)
+VITE_GITLAB_URL=https://gitlab.example.com
+VITE_GITLAB_TOKEN=your-gitlab-token
+
+# Configuration GitHub (optionnel)
+VITE_GITHUB_TOKEN=your-github-token
+
+# Configuration IA (optionnel)
+VITE_OPENAI_API_KEY=your-openai-key
+VITE_ANTHROPIC_API_KEY=your-anthropic-key
+```
+
+### 4. Lancer en développement
+
+```bash
+npm run dev
+```
+
+L'application sera accessible sur `http://localhost:3000`
+
+### 5. Build de production
+
+```bash
+npm run build
+```
+
+Les fichiers seront générés dans le dossier `dist/`
+
+---
+
+## 📖 Utilisation
+
+### Première connexion
+
+1. Accédez à l'application via votre navigateur
+2. Choisissez votre profil utilisateur (Admin ou User)
+3. Cliquez sur "Se connecter"
+
+### Navigation
+
+Le menu latéral est organisé en 3 sections :
+
+#### 📁 Général
+- **Tableau de bord** : Vue d'ensemble
+- **Applications** : Liste globale des applications
+- **Environnements** : Monitoring temps réel
+- **Progression** : Suivi de la migration
+- **Assistant IA** : Chatbot partagé
+- **Import/Export** : Gestion des données
+
+#### 👤 Personnel
+- **Mon profil** : Informations et préférences
+- **Mes applications** : Vos applications personnelles
+- **Mes connexions Git** : Vos repositories GitLab/GitHub
+- **Mon assistant IA** : Configuration de votre LLM
+
+#### 🔐 Administration (Admin uniquement)
+- **Administration** : Gestion des utilisateurs
+
+### Ajouter une application personnelle
+
+1. Allez dans "Mes applications"
+2. Cliquez sur "Ajouter une application"
+3. Remplissez les informations :
+   - Nom de l'application
+   - Description
+   - Équipe
+   - Criticité (Basse/Moyenne/Haute)
+4. Cliquez sur "Ajouter"
+
+### Configurer une connexion Git
+
+1. Allez dans "Mes connexions Git"
+2. Cliquez sur "Ajouter une connexion Git"
+3. Sélectionnez le provider (GitLab/GitHub)
+4. Remplissez :
+   - URL du serveur
+   - Token d'accès
+   - Organisation/Groupe
+5. Cliquez sur "Ajouter"
+6. Testez la connexion avec le bouton "Tester"
+
+### Configurer l'assistant IA
+
+1. Allez dans "Mon assistant IA"
+2. Sélectionnez le provider (OpenAI, Anthropic, Ollama, Custom)
+3. Choisissez le modèle
+4. Entrez votre clé API
+5. Ajustez les paramètres :
+   - Température (0 = précis, 1 = créatif)
+   - Tokens maximum
+6. Cliquez sur "Sauvegarder"
+7. Testez avec la section "Tester mon assistant"
+
+### Importer des applications
+
+#### Depuis JSON
+```json
+[
+  {
+    "id": "app-1",
+    "name": "mon-application",
+    "description": "Description de l'application",
+    "team": "Platform",
+    "sourceSocle": "Kubernetes 1.24",
+    "targetSocle": "OCP 4.14",
+    "migrationStatus": "in_progress",
+    "migrationProgress": 50,
+    "criticality": "high",
+    "estimatedCompletion": "2026-02-01"
+  }
+]
+```
+
+#### Depuis CSV
+```csv
+ID,Nom,Description,Équipe,Source,Cible,Statut,Progression,Criticité,Échéance
+app-1,mon-application,Description,Platform,Kubernetes 1.24,OCP 4.14,in_progress,50,high,2026-02-01
+```
+
+1. Allez dans "Import/Export"
+2. Sélectionnez le format (JSON ou CSV)
+3. Cliquez sur "Choisir un fichier"
+4. Sélectionnez votre fichier
+5. L'application valide et importe les données
+
+### Exporter des applications
+
+1. Allez dans "Import/Export"
+2. Sélectionnez le format d'export (JSON ou CSV)
+3. Cliquez sur "Exporter X applications"
+4. Le fichier sera téléchargé automatiquement
+
+---
+
+## ⚙️ Configuration
+
+### Variables d'environnement
+
+| Variable | Description | Requis | Défaut |
+|----------|-------------|--------|--------|
+| `VITE_GITLAB_URL` | URL du serveur GitLab | Non | - |
+| `VITE_GITLAB_TOKEN` | Token d'accès GitLab | Non | - |
+| `VITE_GITHUB_TOKEN` | Token d'accès GitHub | Non | - |
+| `VITE_OPENAI_API_KEY` | Clé API OpenAI | Non | - |
+| `VITE_ANTHROPIC_API_KEY` | Clé API Anthropic | Non | - |
+| `VITE_API_URL` | URL de l'API backend | Non | `http://localhost:8080` |
+
+### Configuration Vite
+
+Le fichier `vite.config.js` contient :
+
+```javascript
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  base: './',  // Chemins relatifs pour le déploiement
+  server: {
+    host: "0.0.0.0",
+    port: 3000,
+  },
+});
+```
+
+### Personnalisation
+
+#### Modifier les couleurs
+
+Éditez `src/index.css` :
+
+```css
+:root {
+  --primary-color: #4f46e5;
+  --secondary-color: #7c3aed;
+  --success-color: #10b981;
+  --warning-color: #f59e0b;
+  --error-color: #ef4444;
+}
+```
+
+#### Ajouter un nouveau rôle utilisateur
+
+Modifiez `src/context/UserContext.tsx` :
+
+```typescript
+type UserRole = 'admin' | 'user' | 'manager';
+```
+
+---
+
+## 🌐 Déploiement
+
+### Option 1 : Déploiement statique (Recommandé)
+
+#### Build de production
+
+```bash
+npm run build
+```
+
+#### Déployer sur Nginx
+
+1. Copiez le contenu de `dist/` vers votre serveur web :
+
+```bash
+scp -r dist/* user@server:/var/www/socletracker/
+```
+
+2. Configurez Nginx (`/etc/nginx/sites-available/socletracker`) :
+
+```nginx
+server {
+    listen 80;
+    server_name socletracker.example.com;
+    root /var/www/socletracker;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # Cache statique
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+
+    # Gzip
+    gzip on;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml;
+}
+```
+
+3. Redémarrez Nginx :
+
+```bash
+sudo systemctl restart nginx
+```
+
+#### Déployer sur Apache
+
+```apache
+<VirtualHost *:80>
+    ServerName socletracker.example.com
+    DocumentRoot /var/www/socletracker
+
+    <Directory /var/www/socletracker>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+        
+        RewriteEngine On
+        RewriteBase /
+        RewriteRule ^index\.html$ - [L]
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteRule . /index.html [L]
+    </Directory>
+</VirtualHost>
+```
+
+### Option 2 : Docker
+
+#### Dockerfile
+
+```dockerfile
+# Build stage
+FROM node:18-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+# Production stage
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+#### nginx.conf
+
+```nginx
+server {
+    listen 80;
+    server_name localhost;
+    root /usr/share/nginx/html;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
+```
+
+#### Build et run
+
+```bash
+# Build l'image
+docker build -t socletracker:latest .
+
+# Run le container
+docker run -d -p 8080:80 --name socletracker socletracker:latest
+```
+
+#### Docker Compose
+
+```yaml
+version: '3.8'
+
+services:
+  socletracker:
+    build: .
+    ports:
+      - "8080:80"
+    environment:
+      - VITE_GITLAB_URL=https://gitlab.example.com
+      - VITE_OPENAI_API_KEY=your-key
+    restart: unless-stopped
+```
+
+```bash
+docker-compose up -d
+```
+
+### Option 3 : Kubernetes
+
+#### Deployment
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: socletracker
+  labels:
+    app: socletracker
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: socletracker
+  template:
+    metadata:
+      labels:
+        app: socletracker
+    spec:
+      containers:
+      - name: socletracker
+        image: your-registry/socletracker:latest
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+```
+
+#### Service
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: socletracker
+spec:
+  selector:
+    app: socletracker
+  ports:
+  - port: 80
+    targetPort: 80
+  type: ClusterIP
+```
+
+#### Ingress
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: socletracker
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: socletracker.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: socletracker
+            port:
+              number: 80
+```
+
+### Option 4 : Vercel / Netlify
+
+#### Vercel
+
+```bash
+npm i -g vercel
+vercel
+```
+
+#### Netlify
+
+```bash
+npm i -g netlify-cli
+netlify deploy --prod --dir=dist
+```
+
+Ou connectez votre repository Git pour un déploiement automatique.
+
+---
+
+## 🔌 API et Intégrations
+
+### GitLab API
+
+L'application utilise l'API GitLab pour vérifier les charts Helm :
+
+```typescript
+// Exemple d'appel API
+const response = await fetch(`${gitlabUrl}/api/v4/projects/${projectId}/repository/tree`, {
+  headers: {
+    'PRIVATE-TOKEN': token
+  }
+});
+```
+
+### GitHub API
+
+```typescript
+const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+  headers: {
+    'Authorization': `token ${githubToken}`
+  }
+});
+```
+
+### OpenAI API
+
+```typescript
+const response = await fetch('https://api.openai.com/v1/chat/completions', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${apiKey}`
+  },
+  body: JSON.stringify({
+    model: 'gpt-4-turbo',
+    messages: [{ role: 'user', content: message }],
+    temperature: 0.7
+  })
+});
+```
+
+---
+
+## 🛠️ Développement
+
+### Structure des composants
+
+```typescript
+// Exemple de composant
+export default function MyComponent() {
+  const { currentUser } = useUser(); // Contexte utilisateur
+  
+  return (
+    <div>
+      <h1>{currentUser.name}</h1>
+    </div>
+  );
+}
+```
+
+### Ajout d'une nouvelle fonctionnalité
+
+1. Créez un composant dans `src/components/`
+2. Ajoutez-le dans `src/App.tsx`
+3. Mettez à jour la navigation si nécessaire
+4. Testez avec `npm run dev`
+
+### Tests
+
+```bash
+# Lancer les tests
+npm test
+
+# Tests avec coverage
+npm run test:coverage
+```
+
+### Linting
+
+```bash
+npm run lint
+npm run lint:fix
+```
+
+### Type checking
+
+```bash
+npm run typecheck
+```
+
+---
+
+## ❓ FAQ
+
+### L'application affiche une page blanche
+
+**Solution** : Vérifiez que le fichier `vite.config.js` contient `base: './'` pour les chemins relatifs.
+
+### Les icônes ne s'affichent pas
+
+**Solution** : Vérifiez que Font Awesome est chargé dans `index.html` :
+```html
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+```
+
+### Comment ajouter un nouvel utilisateur ?
+
+**Solution** : Modifiez le tableau `defaultUsers` dans `src/context/UserContext.tsx`.
+
+### L'assistant IA ne répond pas
+
+**Solution** : Vérifiez que la clé API est configurée dans "Mon assistant IA" et que le provider est correct.
+
+### Comment changer le thème ?
+
+**Solution** : Allez dans "Mon profil" → "Préférences" → "Thème".
+
+---
+
+## 🤝 Contribution
+
+Les contributions sont les bienvenues !
+
+### Processus
+
+1. Fork le projet
+2. Créez une branche (`git checkout -b feature/AmazingFeature`)
+3. Commit vos changements (`git commit -m 'Add AmazingFeature'`)
+4. Push vers la branche (`git push origin feature/AmazingFeature`)
+5. Ouvrez une Pull Request
+
+### Guidelines
+
+- Respectez la structure du code
+- Ajoutez des commentaires en français
+- Testez vos modifications
+- Mettez à jour la documentation si nécessaire
+
+---
+
+## 📄 Licence
+
+Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+
+---
+
+## 📞 Support
+
+Pour toute question ou problème :
+- Ouvrez une issue sur GitHub
+- Contactez l'équipe : support@socletracker.com
+
+---
+
+## 🙏 Remerciements
+
+- React Team pour le framework
+- Vite Team pour le build tool
+- Tailwind CSS pour le design system
+- Toute la communauté open source
+
+---
+
+**Développé avec ❤️ pour faciliter les migrations Kubernetes**
