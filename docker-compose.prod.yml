@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  socletracker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: socletracker-prod
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+    restart: always
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - socletracker-network
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+
+  # Optionnel : Watchtower pour mise à jour automatique des images
+  watchtower:
+    image: containrrr/watchtower
+    container_name: socletracker-watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 3600 --label-enable
+    restart: unless-stopped
+    networks:
+      - socletracker-network
+
+  # Optionnel : Nginx reverse proxy avec SSL
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: socletracker-nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./nginx/ssl:/etc/nginx/certs:ro
+      - ./nginx/vhost.d:/etc/nginx/vhost.d
+      - ./nginx/htpasswd:/etc/nginx/htpasswd
+    restart: unless-stopped
+    networks:
+      - socletracker-network
+
+  # Optionnel : Let's Encrypt pour certificats SSL automatiques
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: socletracker-letsencrypt
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./nginx/ssl:/etc/nginx/certs
+      - ./nginx/vhost.d:/etc/nginx/vhost.d
+      - ./nginx/htpasswd:/etc/nginx/htpasswd
+    environment:
+      - DEFAULT_EMAIL=admin@example.com
+      - NGINX_PROXY_CONTAINER=socletracker-nginx-proxy
+    restart: unless-stopped
+    networks:
+      - socletracker-network
+
+networks:
+  socletracker-network:
+    driver: bridge
