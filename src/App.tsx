@@ -15,8 +15,13 @@ import Reports from './components/Reports';
 import MigrationCalendar from './components/MigrationCalendar';
 import AIPredictions from './components/AIPredictions';
 import JiraIntegration from './components/JiraIntegration';
+import ReleaseDashboard from './components/ReleaseDashboard';
+import ReleasesList from './components/ReleasesList';
+import ServicesRegistry from './components/ServicesRegistry';
+import ReleaseCalendarView from './components/ReleaseCalendarView';
+import TeamsManagement from './components/TeamsManagement';
 
-type View = 'dashboard' | 'my-apps' | 'environments' | 'progress' | 'assistant' | 'import-export' | 'admin' | 'my-git' | 'my-llm' | 'profile' | 'notifications' | 'reports' | 'calendar' | 'predictions' | 'jira';
+type View = 'dashboard' | 'my-apps' | 'environments' | 'progress' | 'assistant' | 'import-export' | 'admin' | 'my-git' | 'my-llm' | 'profile' | 'notifications' | 'reports' | 'calendar' | 'predictions' | 'jira' | 'release-dashboard' | 'releases' | 'services' | 'release-calendar' | 'teams';
 
 function AppContent() {
   const { currentUser, users, setCurrentUser } = useUser();
@@ -25,11 +30,16 @@ function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   const navItems = [
+    { id: 'release-dashboard' as View, label: 'Release Hub', icon: 'fa-rocket', section: 'release', highlight: true },
+    { id: 'releases' as View, label: 'Releases', icon: 'fa-box', section: 'release' },
+    { id: 'services' as View, label: 'Registry Versions', icon: 'fa-server', section: 'release' },
+    { id: 'release-calendar' as View, label: 'Calendrier', icon: 'fa-calendar-alt', section: 'release' },
+    { id: 'teams' as View, label: 'Équipes', icon: 'fa-users', section: 'release' },
     { id: 'dashboard' as View, label: 'Tableau de bord', icon: 'fa-th-large', section: 'general' },
     { id: 'my-apps' as View, label: 'Mes applications', icon: 'fa-cubes', section: 'general' },
     { id: 'environments' as View, label: 'Environnements', icon: 'fa-server', section: 'general' },
     { id: 'progress' as View, label: 'Progression', icon: 'fa-chart-line', section: 'general' },
-    { id: 'calendar' as View, label: 'Calendrier', icon: 'fa-calendar-alt', section: 'general' },
+    { id: 'calendar' as View, label: 'Calendrier Migration', icon: 'fa-calendar', section: 'general' },
     { id: 'assistant' as View, label: 'Assistant IA', icon: 'fa-robot', section: 'general' },
     { id: 'predictions' as View, label: 'Prédictions IA', icon: 'fa-magic', section: 'general' },
     { id: 'import-export' as View, label: 'Import/Export', icon: 'fa-file-import', section: 'general' },
@@ -47,8 +57,18 @@ function AppContent() {
     return true;
   });
 
+  const releaseItems = filteredNavItems.filter(i => i.section === 'release');
+  const generalItems = filteredNavItems.filter(i => i.section === 'general');
+  const personalItems = filteredNavItems.filter(i => i.section === 'personal');
+  const adminItems = filteredNavItems.filter(i => i.section === 'admin');
+
   const renderContent = () => {
     switch (currentView) {
+      case 'release-dashboard': return <ReleaseDashboard />;
+      case 'releases': return <ReleasesList />;
+      case 'services': return <ServicesRegistry />;
+      case 'release-calendar': return <ReleaseCalendarView />;
+      case 'teams': return <TeamsManagement />;
       case 'dashboard': return <Dashboard />;
       case 'my-apps': return <MyApplications />;
       case 'environments': return <EnvironmentMonitor />;
@@ -64,7 +84,7 @@ function AppContent() {
       case 'my-git': return <MyGitConfig />;
       case 'my-llm': return <MyLLMConfig />;
       case 'admin': return currentUser?.role === 'admin' ? <AdminDashboard /> : <div>Accès refusé</div>;
-      default: return <Dashboard />;
+      default: return <ReleaseDashboard />;
     }
   };
 
@@ -174,10 +194,6 @@ function AppContent() {
     );
   }
 
-  const generalItems = filteredNavItems.filter(i => i.section === 'general');
-  const personalItems = filteredNavItems.filter(i => i.section === 'personal');
-  const adminItems = filteredNavItems.filter(i => i.section === 'admin');
-
   return (
     <div style={{ display: 'flex', height: '100vh', background: '#f9fafb', overflow: 'hidden' }}>
       {/* Sidebar */}
@@ -214,12 +230,45 @@ function AppContent() {
         </div>
 
         <nav style={{ flex: 1, padding: '12px', display: 'flex', flexDirection: 'column', gap: '4px', overflowY: 'auto' }}>
-          {/* General Section */}
+          {/* Release Section */}
           {sidebarOpen && (
             <p style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', padding: '8px 12px 4px', letterSpacing: '0.05em' }}>
-              Général
+              🚀 Release Manager
             </p>
           )}
+          {releaseItems.map(item => (
+            <button
+              key={item.id}
+              onClick={() => setCurrentView(item.id)}
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '10px 12px',
+                borderRadius: '8px',
+                fontSize: '14px',
+                fontWeight: item.highlight ? 600 : 500,
+                border: 'none',
+                cursor: 'pointer',
+                background: currentView === item.id ? '#eef2ff' : item.highlight ? '#f0f9ff' : 'transparent',
+                color: currentView === item.id ? '#4f46e5' : item.highlight ? '#0284c7' : '#4b5563',
+                transition: 'all 0.2s',
+                textAlign: 'left'
+              }}
+            >
+              <i className={`fas ${item.icon}`} style={{ width: '20px', textAlign: 'center' }}></i>
+              {sidebarOpen && <span>{item.label}</span>}
+            </button>
+          ))}
+
+          {/* General Section */}
+          {sidebarOpen && (
+            <p style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', padding: '16px 12px 4px', letterSpacing: '0.05em' }}>
+              Migration
+            </p>
+          )}
+          {!sidebarOpen && <div style={{ height: '16px' }}></div>}
           {generalItems.map(item => (
             <button
               key={item.id}
@@ -365,6 +414,11 @@ function AppContent() {
                 {navItems.find(i => i.id === currentView)?.label}
               </h2>
               <p style={{ fontSize: '12px', color: '#6b7280' }}>
+                {currentView === 'release-dashboard' && 'Centre de commande des releases'}
+                {currentView === 'releases' && 'Gestion complète des releases'}
+                {currentView === 'services' && 'Versions installées par environnement'}
+                {currentView === 'release-calendar' && 'Planification des déploiements'}
+                {currentView === 'teams' && 'Équipes et responsabilités'}
                 {currentView === 'dashboard' && "Vue d'ensemble"}
                 {currentView === 'my-apps' && 'Vos applications personnelles'}
                 {currentView === 'environments' && 'Monitoring en temps réel'}
