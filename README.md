@@ -4,7 +4,7 @@
 
 SocleTracker est une solution complète pour piloter la migration d'applications d'un socle Kubernetes vers un autre (ex: Kubernetes 1.24 → OpenShift 4.14). Elle offre un monitoring en temps réel, une gestion des charts Helm, et un assistant IA intelligent.
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Version](https://img.shields.io/badge/version-2.0.0-blue)
 ![React](https://img.shields.io/badge/React-18.2-61dafb)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178c6)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -76,6 +76,70 @@ SocleTracker est une solution complète pour piloter la migration d'applications
 - Validation automatique des données
 - Mapping intelligent des colonnes CSV
 
+### 🔔 Notifications
+- Configuration de webhooks (Slack, Teams, Email)
+- Alertes sur événements (app bloquée, migration terminée, etc.)
+- Activation/désactivation par webhook
+- Test de connexion
+
+### 📊 Rapports
+- Génération de rapports PDF, Excel, CSV
+- Aperçu avec statistiques détaillées
+- Sélection de période personnalisable
+- Export automatique
+
+### 📅 Calendrier de migration
+- Vue mensuelle avec événements
+- Timeline des migrations
+- Gestion des dépendances entre applications
+- Code couleur par statut
+
+### 🧠 Prédictions IA
+- Estimation de la durée restante par application
+- Analyse des facteurs de risque
+- Score de confiance
+- Recommandations basées sur l'historique
+
+### 🔗 Intégration Jira
+- Configuration de la connexion Jira
+- Synchronisation des tickets
+- Affichage des tickets liés aux applications
+- Création de nouveaux tickets
+
+---
+
+## 🆕 Nouveautés v2.0
+
+### 📊 Analytics & Reporting
+- **Rapports PDF/Excel** générés automatiquement
+- **Graphiques avancés** : burn-down chart, vélocité de migration
+- **KPI personnalisables** : SLA de migration, temps moyen par phase
+- **Heatmap des risques** : visualisation des zones critiques
+
+### 🔔 Notifications & Alertes
+- **Webhooks Slack/Teams** : notifications en temps réel
+- **Alertes email** : résumé quotidien/hebdomadaire
+- **Alertes sur seuils** : progression bloquée depuis X jours
+- **Rappels automatiques** : échéances à approaching
+
+### 📅 Planification Avancée
+- **Calendrier de migration** : drag & drop des dates
+- **Gestion des dépendances** : graphe des applications dépendantes
+- **Fenêtres de maintenance** : planification des créneaux
+- **Timeline interactive** : historique visuel
+
+### 🤖 Intelligence Artificielle
+- **Prédiction de durée** : estimation du temps de migration
+- **Recommandations intelligentes** : ordre optimal de migration
+- **Analyse de risques** : scoring automatique des applications
+- **Détection de patterns** : identifier les applications similaires
+
+### 🔌 Intégrations DevOps
+- **Jira** : synchronisation des tickets de migration
+- **GitLab/GitHub** : vérification des charts Helm
+- **Prometheus/Grafana** : métriques en temps réel
+- **Slack/Teams** : notifications d'équipe
+
 ---
 
 ## 🏗️ Architecture
@@ -95,7 +159,12 @@ socletracker/
 │   │   ├── MyApplications.tsx
 │   │   ├── MyGitConfig.tsx
 │   │   ├── MyLLMConfig.tsx
-│   │   └── UserProfile.tsx
+│   │   ├── UserProfile.tsx
+│   │   ├── Notifications.tsx
+│   │   ├── Reports.tsx
+│   │   ├── MigrationCalendar.tsx
+│   │   ├── AIPredictions.tsx
+│   │   └── JiraIntegration.tsx
 │   ├── context/
 │   │   └── UserContext.tsx    # Gestion de l'état utilisateur
 │   ├── data/
@@ -220,8 +289,13 @@ Le menu latéral est organisé en 3 sections :
 - **Applications** : Liste globale des applications
 - **Environnements** : Monitoring temps réel
 - **Progression** : Suivi de la migration
+- **Calendrier** : Planification des migrations
 - **Assistant IA** : Chatbot partagé
+- **Prédictions IA** : Estimation de la durée
 - **Import/Export** : Gestion des données
+- **Rapports** : Génération de rapports
+- **Notifications** : Configuration des alertes
+- **Jira** : Intégration avec Jira
 
 #### 👤 Personnel
 - **Mon profil** : Informations et préférences
@@ -433,28 +507,108 @@ sudo systemctl restart nginx
 </VirtualHost>
 ```
 
-### Option 2 : Docker
+### Option 2 : Docker (Recommandé pour la production)
 
-#### Dockerfile
+L'application inclut un Dockerfile optimisé et une configuration docker-compose.
 
-```dockerfile
-# Build stage
-FROM node:18-alpine AS build
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
-RUN npm run build
+#### Construction de l'image Docker
 
-# Production stage
-FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+```bash
+# Construire l'image
+docker build -t socletracker:latest .
+
+# Vérifier que l'image a été créée
+docker images | grep socletracker
+```
+
+#### Lancement avec Docker
+
+```bash
+# Lancer le conteneur
+docker run -d \
+  --name socletracker \
+  -p 8080:80 \
+  --restart unless-stopped \
+  socletracker:latest
+
+# Vérifier les logs
+docker logs socletracker
+
+# Accéder à l'application
+# http://localhost:8080
+```
+
+#### Lancement avec Docker Compose
+
+```bash
+# Démarrer les services
+docker-compose up -d
+
+# Vérifier le statut
+docker-compose ps
+
+# Voir les logs
+docker-compose logs -f
+
+# Arrêter les services
+docker-compose down
+```
+
+#### Configuration Docker Compose
+
+Le fichier `docker-compose.yml` inclus configure :
+- Port mappé : 8080 → 80
+- Healthcheck automatique
+- Redémarrage automatique
+- Réseau dédié
+
+#### Variables d'environnement (optionnel)
+
+Pour personnaliser le déploiement, créez un fichier `.env` :
+
+```env
+# Configuration GitLab
+VITE_GITLAB_URL=https://gitlab.example.com
+VITE_GITLAB_TOKEN=your-token
+
+# Configuration GitHub
+VITE_GITHUB_TOKEN=your-token
+
+# Configuration IA
+VITE_OPENAI_API_KEY=your-key
+VITE_ANTHROPIC_API_KEY=your-key
+```
+
+Puis lancez avec :
+
+```bash
+docker-compose --env-file .env up -d
+```
+
+#### Healthcheck
+
+L'application expose un endpoint de healthcheck :
+
+```bash
+# Vérifier que l'application est opérationnelle
+curl http://localhost:8080/health
+# Réponse : healthy
+```
+
+#### Mise à jour
+
+```bash
+# Tirer la nouvelle image
+docker pull socletracker:latest
+
+# Recréer le conteneur
+docker-compose down
+docker-compose up -d
 ```
 
 #### nginx.conf
+
+La configuration nginx incluse dans le Dockerfile :
 
 ```nginx
 server {
@@ -635,6 +789,64 @@ const response = await fetch('https://api.openai.com/v1/chat/completions', {
 });
 ```
 
+### Webhooks de Notifications
+
+L'application supporte l'envoi de webhooks vers Slack, Teams et autres services :
+
+#### Configuration Slack
+
+1. Créez un webhook entrant dans Slack : https://api.slack.com/messaging/webhooks
+2. Copiez l'URL du webhook
+3. Configurez-la dans "Notifications" > "Ajouter une notification" > "Slack"
+
+#### Exemple de payload Slack
+
+```json
+{
+  "text": "🚀 Migration terminée",
+  "blocks": [
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "*Application :* api-gateway\n*Progression :* 100%\n*Environnement :* PROD"
+      }
+    }
+  ]
+}
+```
+
+#### Configuration Teams
+
+1. Créez un webhook entrant dans Teams
+2. Copiez l'URL du connecteur
+3. Configurez-la dans "Notifications" > "Ajouter une notification" > "Teams"
+
+#### Configuration Email
+
+1. Configurez un serveur SMTP dans les variables d'environnement
+2. Activez les notifications email dans "Notifications"
+
+### Jira API
+
+L'application s'intègre avec Jira pour synchroniser les tickets :
+
+```typescript
+// Récupérer les tickets liés à une application
+const response = await fetch(`${jiraUrl}/rest/api/3/search?jql=project=${projectKey}`, {
+  headers: {
+    'Authorization': `Basic ${btoa(`${email}:${apiToken}`)}`,
+    'Content-Type': 'application/json'
+  }
+});
+```
+
+#### Configuration Jira
+
+1. Générez un token API sur https://id.atlassian.com/manage-profile/security/api-tokens
+2. Configurez la connexion dans "Jira" > "Configuration"
+3. Synchronisez les tickets avec "Synchroniser"
+
 ---
 
 ## 🛠️ Développement
@@ -737,6 +949,14 @@ Les contributions sont les bienvenues !
 ## 📄 Licence
 
 Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+
+---
+
+## 📚 Documentation supplémentaire
+
+- **[CHANGELOG.md](CHANGELOG.md)** : Historique complet des versions et changements
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** : Guide pour contribuer au projet
+- **[.env.example](.env.example)** : Template des variables d'environnement
 
 ---
 
