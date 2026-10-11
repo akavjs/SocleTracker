@@ -10,8 +10,13 @@ import AdminDashboard from './components/AdminDashboard';
 import MyGitConfig from './components/MyGitConfig';
 import MyLLMConfig from './components/MyLLMConfig';
 import UserProfile from './components/UserProfile';
+import Notifications from './components/Notifications';
+import Reports from './components/Reports';
+import MigrationCalendar from './components/MigrationCalendar';
+import AIPredictions from './components/AIPredictions';
+import JiraIntegration from './components/JiraIntegration';
 
-type View = 'dashboard' | 'my-apps' | 'environments' | 'progress' | 'assistant' | 'import-export' | 'admin' | 'my-git' | 'my-llm' | 'profile';
+type View = 'dashboard' | 'my-apps' | 'environments' | 'progress' | 'assistant' | 'import-export' | 'admin' | 'my-git' | 'my-llm' | 'profile' | 'notifications' | 'reports' | 'calendar' | 'predictions' | 'jira';
 
 function AppContent() {
   const { currentUser, users, setCurrentUser } = useUser();
@@ -24,8 +29,13 @@ function AppContent() {
     { id: 'my-apps' as View, label: 'Mes applications', icon: 'fa-cubes', section: 'general' },
     { id: 'environments' as View, label: 'Environnements', icon: 'fa-server', section: 'general' },
     { id: 'progress' as View, label: 'Progression', icon: 'fa-chart-line', section: 'general' },
+    { id: 'calendar' as View, label: 'Calendrier', icon: 'fa-calendar-alt', section: 'general' },
     { id: 'assistant' as View, label: 'Assistant IA', icon: 'fa-robot', section: 'general' },
+    { id: 'predictions' as View, label: 'Prédictions IA', icon: 'fa-magic', section: 'general' },
     { id: 'import-export' as View, label: 'Import/Export', icon: 'fa-file-import', section: 'general' },
+    { id: 'reports' as View, label: 'Rapports', icon: 'fa-file-alt', section: 'general' },
+    { id: 'notifications' as View, label: 'Notifications', icon: 'fa-bell', section: 'general' },
+    { id: 'jira' as View, label: 'Jira', icon: 'fa-tasks', section: 'general' },
     { id: 'profile' as View, label: 'Mon profil', icon: 'fa-user-circle', section: 'personal' },
     { id: 'my-git' as View, label: 'Mes connexions Git', icon: 'fa-code-branch', section: 'personal' },
     { id: 'my-llm' as View, label: 'Mon assistant IA', icon: 'fa-brain', section: 'personal' },
@@ -43,8 +53,13 @@ function AppContent() {
       case 'my-apps': return <MyApplications />;
       case 'environments': return <EnvironmentMonitor />;
       case 'progress': return <MigrationProgress />;
+      case 'calendar': return <MigrationCalendar />;
       case 'assistant': return <LLMChat />;
+      case 'predictions': return <AIPredictions />;
       case 'import-export': return <ImportExport />;
+      case 'reports': return <Reports />;
+      case 'notifications': return <Notifications />;
+      case 'jira': return <JiraIntegration />;
       case 'profile': return <UserProfile />;
       case 'my-git': return <MyGitConfig />;
       case 'my-llm': return <MyLLMConfig />;
@@ -354,8 +369,13 @@ function AppContent() {
                 {currentView === 'my-apps' && 'Vos applications personnelles'}
                 {currentView === 'environments' && 'Monitoring en temps réel'}
                 {currentView === 'progress' && "Suivi de l'avancement"}
+                {currentView === 'calendar' && 'Planification des migrations'}
                 {currentView === 'assistant' && 'Assistant intelligent partagé'}
+                {currentView === 'predictions' && 'Estimation IA de la durée'}
                 {currentView === 'import-export' && 'Importez et exportez vos données'}
+                {currentView === 'reports' && 'Générez des rapports détaillés'}
+                {currentView === 'notifications' && 'Configurez vos alertes'}
+                {currentView === 'jira' && 'Synchronisation avec Jira'}
                 {currentView === 'profile' && 'Gérez votre profil'}
                 {currentView === 'my-git' && 'Vos connexions GitLab/GitHub'}
                 {currentView === 'my-llm' && 'Configurez votre assistant IA'}
