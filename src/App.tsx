@@ -28,6 +28,20 @@ function AppContent() {
   const [currentView, setCurrentView] = useState<View>('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
+    release: true,
+    debt: true,
+    tools: false,
+    personal: false,
+    admin: false
+  });
+
+  const toggleSection = (section: string) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
 
   const navItems = [
     // 🚀 RELEASE MANAGEMENT
@@ -242,11 +256,30 @@ function AppContent() {
         <nav style={{ flex: 1, padding: '12px', display: 'flex', flexDirection: 'column', gap: '4px', overflowY: 'auto' }}>
           {/* Release Section */}
           {sidebarOpen && (
-            <p style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', padding: '8px 12px 4px', letterSpacing: '0.05em' }}>
-              🚀 Release Manager
-            </p>
+            <button
+              onClick={() => toggleSection('release')}
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                fontSize: '11px',
+                fontWeight: 600,
+                color: '#9ca3af',
+                textTransform: 'uppercase',
+                padding: '8px 12px 4px',
+                letterSpacing: '0.05em',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                textAlign: 'left'
+              }}
+            >
+              <span>🚀 Release Manager</span>
+              <i className={`fas fa-chevron-${expandedSections.release ? 'down' : 'right'}`} style={{ fontSize: '10px' }}></i>
+            </button>
           )}
-          {releaseItems.map(item => (
+          {sidebarOpen && expandedSections.release && releaseItems.map(item => (
             <button
               key={item.id}
               onClick={() => setCurrentView(item.id)}
@@ -268,18 +301,37 @@ function AppContent() {
               }}
             >
               <i className={`fas ${item.icon}`} style={{ width: '20px', textAlign: 'center' }}></i>
-              {sidebarOpen && <span>{item.label}</span>}
+              <span>{item.label}</span>
             </button>
           ))}
 
           {/* Gestion de la dette Section */}
           {sidebarOpen && (
-            <p style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', padding: '16px 12px 4px', letterSpacing: '0.05em' }}>
-              📦 Gestion de la dette
-            </p>
+            <button
+              onClick={() => toggleSection('debt')}
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                fontSize: '11px',
+                fontWeight: 600,
+                color: '#9ca3af',
+                textTransform: 'uppercase',
+                padding: '16px 12px 4px',
+                letterSpacing: '0.05em',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                textAlign: 'left'
+              }}
+            >
+              <span>📦 Gestion de la dette</span>
+              <i className={`fas fa-chevron-${expandedSections.debt ? 'down' : 'right'}`} style={{ fontSize: '10px' }}></i>
+            </button>
           )}
           {!sidebarOpen && <div style={{ height: '16px' }}></div>}
-          {debtItems.map(item => (
+          {sidebarOpen && expandedSections.debt && debtItems.map(item => (
             <button
               key={item.id}
               onClick={() => setCurrentView(item.id)}
@@ -301,18 +353,37 @@ function AppContent() {
               }}
             >
               <i className={`fas ${item.icon}`} style={{ width: '20px', textAlign: 'center' }}></i>
-              {sidebarOpen && <span>{item.label}</span>}
+              <span>{item.label}</span>
             </button>
           ))}
 
           {/* Outils communs Section */}
           {sidebarOpen && (
-            <p style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', padding: '16px 12px 4px', letterSpacing: '0.05em' }}>
-              🔧 Outils
-            </p>
+            <button
+              onClick={() => toggleSection('tools')}
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                fontSize: '11px',
+                fontWeight: 600,
+                color: '#9ca3af',
+                textTransform: 'uppercase',
+                padding: '16px 12px 4px',
+                letterSpacing: '0.05em',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                textAlign: 'left'
+              }}
+            >
+              <span>🔧 Outils</span>
+              <i className={`fas fa-chevron-${expandedSections.tools ? 'down' : 'right'}`} style={{ fontSize: '10px' }}></i>
+            </button>
           )}
           {!sidebarOpen && <div style={{ height: '16px' }}></div>}
-          {toolsItems.map(item => (
+          {sidebarOpen && expandedSections.tools && toolsItems.map(item => (
             <button
               key={item.id}
               onClick={() => setCurrentView(item.id)}
@@ -334,18 +405,37 @@ function AppContent() {
               }}
             >
               <i className={`fas ${item.icon}`} style={{ width: '20px', textAlign: 'center' }}></i>
-              {sidebarOpen && <span>{item.label}</span>}
+              <span>{item.label}</span>
             </button>
           ))}
 
           {/* Personal Section */}
           {sidebarOpen && (
-            <p style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', padding: '16px 12px 4px', letterSpacing: '0.05em' }}>
-              👤 Personnel
-            </p>
+            <button
+              onClick={() => toggleSection('personal')}
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                fontSize: '11px',
+                fontWeight: 600,
+                color: '#9ca3af',
+                textTransform: 'uppercase',
+                padding: '16px 12px 4px',
+                letterSpacing: '0.05em',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                textAlign: 'left'
+              }}
+            >
+              <span>👤 Personnel</span>
+              <i className={`fas fa-chevron-${expandedSections.personal ? 'down' : 'right'}`} style={{ fontSize: '10px' }}></i>
+            </button>
           )}
           {!sidebarOpen && <div style={{ height: '16px' }}></div>}
-          {personalItems.map(item => (
+          {sidebarOpen && expandedSections.personal && personalItems.map(item => (
             <button
               key={item.id}
               onClick={() => setCurrentView(item.id)}
@@ -367,7 +457,7 @@ function AppContent() {
               }}
             >
               <i className={`fas ${item.icon}`} style={{ width: '20px', textAlign: 'center' }}></i>
-              {sidebarOpen && <span>{item.label}</span>}
+              <span>{item.label}</span>
             </button>
           ))}
 
@@ -375,12 +465,31 @@ function AppContent() {
           {adminItems.length > 0 && (
             <>
               {sidebarOpen && (
-                <p style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', padding: '16px 12px 4px', letterSpacing: '0.05em' }}>
-                  Administration
-                </p>
+                <button
+                  onClick={() => toggleSection('admin')}
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    color: '#9ca3af',
+                    textTransform: 'uppercase',
+                    padding: '16px 12px 4px',
+                    letterSpacing: '0.05em',
+                    background: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    textAlign: 'left'
+                  }}
+                >
+                  <span>🔐 Administration</span>
+                  <i className={`fas fa-chevron-${expandedSections.admin ? 'down' : 'right'}`} style={{ fontSize: '10px' }}></i>
+                </button>
               )}
               {!sidebarOpen && <div style={{ height: '16px' }}></div>}
-              {adminItems.map(item => (
+              {sidebarOpen && expandedSections.admin && adminItems.map(item => (
                 <button
                   key={item.id}
                   onClick={() => setCurrentView(item.id)}
@@ -402,7 +511,7 @@ function AppContent() {
                   }}
                 >
                   <i className={`fas ${item.icon}`} style={{ width: '20px', textAlign: 'center' }}></i>
-                  {sidebarOpen && <span>{item.label}</span>}
+                  <span>{item.label}</span>
                 </button>
               ))}
             </>

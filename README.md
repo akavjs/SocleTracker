@@ -349,7 +349,7 @@ Les fichiers seront générés dans le dossier `dist/`
 
 ### Navigation
 
-Le menu latéral est organisé en 4 grandes sections :
+Le menu latéral est organisé en 5 grandes sections **repliables** :
 
 #### 🚀 Release Management
 - **Dashboard** : Centre de commande des releases
@@ -380,6 +380,12 @@ Le menu latéral est organisé en 4 grandes sections :
 
 #### 🔐 Administration (Admin uniquement)
 - **Administration** : Gestion des utilisateurs
+
+**💡 Fonctionnalités de navigation :**
+- **Sections repliables** : Cliquez sur les titres de section pour les réduire/agrandir
+- **Sidebar rétractable** : Bouton hamburger pour masquer/afficher la barre latérale
+- **État persistant** : Les sections ouvertes/fermées sont mémorisées pendant la session
+- **Navigation fluide** : Transitions animées entre les sections
 
 ### Ajouter une application personnelle
 
