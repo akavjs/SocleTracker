@@ -13,7 +13,7 @@ export default function ImportExport() {
 
     if (exportFormat === 'json') {
       data = JSON.stringify(applications, null, 2);
-      filename = `socletracker-applications-${new Date().toISOString().split('T')[0]}.json`;
+      filename = `relivio-applications-${new Date().toISOString().split('T')[0]}.json`;
       mimeType = 'application/json';
     } else {
       // CSV export
@@ -37,7 +37,7 @@ export default function ImportExport() {
       ].join('\n');
       
       data = csvContent;
-      filename = `socletracker-applications-${new Date().toISOString().split('T')[0]}.csv`;
+      filename = `relivio-applications-${new Date().toISOString().split('T')[0]}.csv`;
       mimeType = 'text/csv';
     }
 

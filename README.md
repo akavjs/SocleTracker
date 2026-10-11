@@ -1,8 +1,10 @@
-# DevOps Hub
+# Relivio
 
-**Plateforme de Release Management et Gestion de la Dette Technique**
+**Release & Debt Manager**
 
-DevOps Hub est une solution complète qui combine :
+> *Un nom moderne, fluide et facile à prononcer. Il évoque les releases, leur cycle de vie et l'amélioration continue.*
+
+Relivio est une plateforme complète qui combine :
 - **Release Management** : Suivi des releases, déploiements, planning et équipes
 - **Gestion de la dette technique** : Migration d'applications Kubernetes (ex: 1.24 → OCP 4.14)
 

@@ -133,18 +133,22 @@ function AppContent() {
             <div style={{
               width: '64px',
               height: '64px',
-              background: 'linear-gradient(135deg, #4f46e5, #7c3aed)',
+              background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
               borderRadius: '16px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              margin: '0 auto 16px'
+              margin: '0 auto 16px',
+              boxShadow: '0 8px 16px rgba(99, 102, 241, 0.3)'
             }}>
-              <i className="fas fa-exchange-alt" style={{ color: 'white', fontSize: '28px' }}></i>
+              <i className="fas fa-infinity" style={{ color: 'white', fontSize: '32px' }}></i>
             </div>
-            <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: '#111827', marginBottom: '8px' }}>
-              SocleTracker
+            <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#111827', marginBottom: '4px' }}>
+              Relivio
             </h1>
+            <p style={{ fontSize: '13px', color: '#6b7280', fontStyle: 'italic', marginBottom: '8px' }}>
+              Release & Debt Manager
+            </p>
             <p style={{ color: '#6b7280', fontSize: '14px' }}>
               Choisissez votre profil pour continuer
             </p>
@@ -235,18 +239,19 @@ function AppContent() {
             <div style={{ 
               width: '40px', 
               height: '40px', 
-              background: 'linear-gradient(135deg, #4f46e5, #7c3aed)', 
+              background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', 
               borderRadius: '12px', 
               display: 'flex', 
               alignItems: 'center', 
               justifyContent: 'center',
-              flexShrink: 0
+              flexShrink: 0,
+              boxShadow: '0 4px 6px rgba(99, 102, 241, 0.3)'
             }}>
-              <i className="fas fa-exchange-alt" style={{ color: 'white', fontSize: '14px' }}></i>
+              <i className="fas fa-infinity" style={{ color: 'white', fontSize: '16px' }}></i>
             </div>
             {sidebarOpen && (
               <div>
-                <h1 style={{ fontWeight: 'bold', color: '#111827', fontSize: '14px' }}>DevOps Hub</h1>
+                <h1 style={{ fontWeight: 'bold', color: '#111827', fontSize: '14px' }}>Relivio</h1>
                 <p style={{ fontSize: '12px', color: '#6b7280' }}>Release & Debt Manager</p>
               </div>
             )}

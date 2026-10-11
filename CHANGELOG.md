@@ -1,6 +1,6 @@
 # Changelog
 
-Tous les changements notables de SocleTracker seront documentés dans ce fichier.
+Tous les changements notables de Relivio seront documentés dans ce fichier.
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère à [Semantic Versioning](https://semver.org/lang/fr/).

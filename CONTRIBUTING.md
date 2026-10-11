@@ -1,6 +1,6 @@
 # Guide de Contribution
 
-Merci de votre intérêt à contribuer à SocleTracker ! Ce document fournit les instructions pour contribuer au projet.
+Merci de votre intérêt à contribuer à Relivio ! Ce document fournit les instructions pour contribuer au projet.
 
 ## 📋 Table des matières
 
