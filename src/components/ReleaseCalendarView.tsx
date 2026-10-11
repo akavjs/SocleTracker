@@ -55,10 +55,11 @@ export default function ReleaseCalendarView() {
   };
 
   return (
-    <div style={{ padding: '24px', maxWidth: '1400px', margin: '0 auto' }}>
+    <div style={{ padding: '24px', width: '100%' }}>
       <div style={{ marginBottom: '32px' }}>
-        <h1 style={{ fontSize: '32px', fontWeight: 'bold', color: '#111827', marginBottom: '8px' }}>
-          📅 Calendrier des Releases
+        <h1 style={{ fontSize: 'clamp(24px, 4vw, 32px)', fontWeight: 'bold', color: '#111827', marginBottom: '8px' }}>
+          <i className="fas fa-calendar-alt" style={{ marginRight: '8px' }}></i>
+          Calendrier des Releases
         </h1>
         <p style={{ color: '#6b7280', fontSize: '16px' }}>
           Planification et suivi de tous les déploiements
@@ -205,7 +206,7 @@ export default function ReleaseCalendarView() {
               </button>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(200px, 100%), 1fr))', gap: '16px', marginBottom: '24px' }}>
               <div style={{ padding: '16px', background: '#f9fafb', borderRadius: '8px' }}>
                 <p style={{ fontSize: '12px', color: '#6b7280', marginBottom: '4px' }}>Environnement</p>
                 <p style={{ fontSize: '16px', fontWeight: '600', color: '#111827' }}>{selectedEvent.environment.toUpperCase()}</p>

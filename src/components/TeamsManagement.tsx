@@ -30,10 +30,11 @@ export default function TeamsManagement() {
   const teams = Array.from(new Set(teamMembers.map(m => m.team)));
 
   return (
-    <div style={{ padding: '24px', maxWidth: '1400px', margin: '0 auto' }}>
+    <div style={{ padding: '24px', width: '100%' }}>
       <div style={{ marginBottom: '32px' }}>
-        <h1 style={{ fontSize: '32px', fontWeight: 'bold', color: '#111827', marginBottom: '8px' }}>
-          👥 Gestion des Équipes
+        <h1 style={{ fontSize: 'clamp(24px, 4vw, 32px)', fontWeight: 'bold', color: '#111827', marginBottom: '8px' }}>
+          <i className="fas fa-users" style={{ marginRight: '8px' }}></i>
+          Gestion des Équipes
         </h1>
         <p style={{ color: '#6b7280', fontSize: '16px' }}>
           Membres des équipes, rôles et responsabilités

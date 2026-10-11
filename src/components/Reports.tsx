@@ -21,9 +21,10 @@ export default function Reports() {
   const avgProgress = Math.round(applications.reduce((acc, a) => acc + a.migrationProgress, 0) / totalApps);
 
   return (
-    <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+    <div style={{ width: '100%' }}>
       <div style={{ marginBottom: '32px' }}>
-        <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: '#111827', marginBottom: '8px' }}>
+        <h1 style={{ fontSize: 'clamp(20px, 3vw, 24px)', fontWeight: 'bold', color: '#111827', marginBottom: '8px' }}>
+          <i className="fas fa-file-alt" style={{ marginRight: '8px' }}></i>
           Rapports et Analyses
         </h1>
         <p style={{ color: '#6b7280' }}>
@@ -192,7 +193,7 @@ export default function Reports() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(200px, 100%), 1fr))', gap: '16px' }}>
             <div>
               <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: '#374151', marginBottom: '8px' }}>
                 Date de début

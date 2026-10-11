@@ -19,30 +19,30 @@ export default function UserProfile() {
   };
 
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+    <div style={{ width: '100%' }}>
       {/* Header */}
       <div style={{
-        background: 'linear-gradient(135deg, #4f46e5, #7c3aed)',
+        background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
         borderRadius: '16px',
-        padding: '32px',
+        padding: 'clamp(16px, 4vw, 32px)',
         marginBottom: '24px',
         color: 'white'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(12px, 3vw, 20px)', flexWrap: 'wrap' }}>
           <div style={{
-            width: '80px',
-            height: '80px',
+            width: 'clamp(60px, 10vw, 80px)',
+            height: 'clamp(60px, 10vw, 80px)',
             borderRadius: '50%',
             background: 'rgba(255,255,255,0.2)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '32px'
+            fontSize: 'clamp(24px, 4vw, 32px)'
           }}>
             <i className="fas fa-user"></i>
           </div>
           <div>
-            <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '4px' }}>
+            <h1 style={{ fontSize: 'clamp(20px, 3vw, 24px)', fontWeight: 'bold', marginBottom: '4px' }}>
               {currentUser.name}
             </h1>
             <p style={{ opacity: 0.9 }}>{currentUser.email}</p>

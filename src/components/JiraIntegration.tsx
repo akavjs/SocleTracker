@@ -103,9 +103,10 @@ export default function JiraIntegration() {
   };
 
   return (
-    <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+    <div style={{ width: '100%' }}>
       <div style={{ marginBottom: '32px' }}>
-        <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: '#111827', marginBottom: '8px' }}>
+        <h1 style={{ fontSize: 'clamp(20px, 3vw, 24px)', fontWeight: 'bold', color: '#111827', marginBottom: '8px' }}>
+          <i className="fab fa-jira" style={{ marginRight: '8px' }}></i>
           Intégration Jira
         </h1>
         <p style={{ color: '#6b7280' }}>

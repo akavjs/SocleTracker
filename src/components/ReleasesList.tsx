@@ -34,7 +34,7 @@ export default function ReleasesList() {
     const priorityColor = getPriorityColor(selectedRelease.priority);
 
     return (
-      <div style={{ padding: '24px', maxWidth: '1400px', margin: '0 auto' }}>
+      <div style={{ padding: '24px', width: '100%' }}>
         <button
           onClick={() => setSelectedRelease(null)}
           style={{ marginBottom: '20px', padding: '8px 16px', background: '#f3f4f6', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px' }}
@@ -126,7 +126,7 @@ export default function ReleasesList() {
         </div>
 
         {/* Content Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '24px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(400px, 100%), 1fr))', gap: '24px', marginBottom: '24px' }}>
           {/* Features & Fixes */}
           <div style={{ background: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
             <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', marginBottom: '16px' }}>

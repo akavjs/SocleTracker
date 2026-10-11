@@ -223,16 +223,19 @@ function AppContent() {
   }
 
   return (
-    <div style={{ display: 'flex', height: '100vh', background: '#f9fafb', overflow: 'hidden' }}>
+    <div style={{ display: 'flex', height: '100vh', background: '#f9fafb', overflow: 'hidden', width: '100%' }}>
       {/* Sidebar */}
       <aside style={{ 
         width: sidebarOpen ? '256px' : '80px', 
+        minWidth: sidebarOpen ? '256px' : '80px',
         background: 'white', 
         borderRight: '1px solid #e5e7eb', 
         display: 'flex', 
         flexDirection: 'column',
         transition: 'width 0.3s',
-        flexShrink: 0
+        flexShrink: 0,
+        zIndex: 10,
+        position: 'relative'
       }}>
         <div style={{ padding: '16px', borderBottom: '1px solid #f3f4f6' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>

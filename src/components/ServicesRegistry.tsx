@@ -13,7 +13,7 @@ export default function ServicesRegistry() {
   };
 
   return (
-    <div style={{ padding: '24px', maxWidth: '1600px', margin: '0 auto' }}>
+    <div style={{ padding: '24px', width: '100%' }}>
       <div style={{ marginBottom: '32px' }}>
         <h1 style={{ fontSize: '32px', fontWeight: 'bold', color: '#111827', marginBottom: '8px' }}>
           📊 Registry des Versions

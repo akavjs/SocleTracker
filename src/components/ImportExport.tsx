@@ -165,11 +165,12 @@ export default function ImportExport() {
   };
 
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-      <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: '#111827', marginBottom: '8px' }}>
+    <div style={{ width: '100%' }}>
+      <h1 style={{ fontSize: 'clamp(20px, 3vw, 24px)', fontWeight: 'bold', color: '#111827', marginBottom: '8px' }}>
+        <i className="fas fa-file-import" style={{ marginRight: '8px' }}></i>
         Import / Export des applications
       </h1>
-      <p style={{ color: '#6b7280', marginBottom: '32px' }}>
+      <p style={{ color: '#6b7280', marginBottom: '32px', fontSize: 'clamp(14px, 2vw, 16px)' }}>
         Gérez vos applications en important ou exportant des données
       </p>
 

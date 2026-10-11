@@ -6,19 +6,20 @@ export default function ReleaseDashboard() {
   const onCallTeam = teamMembers.filter(m => m.onCall);
 
   return (
-    <div style={{ padding: '24px', maxWidth: '1600px', margin: '0 auto' }}>
+    <div style={{ padding: '24px', width: '100%', maxWidth: '100%' }}>
       {/* Header */}
       <div style={{ marginBottom: '32px' }}>
-        <h1 style={{ fontSize: '32px', fontWeight: 'bold', color: '#111827', marginBottom: '8px' }}>
-          🚀 Release Command Center
+        <h1 style={{ fontSize: 'clamp(24px, 4vw, 32px)', fontWeight: 'bold', color: '#111827', marginBottom: '8px' }}>
+          <i className="fas fa-rocket" style={{ marginRight: '8px' }}></i>
+          Release Command Center
         </h1>
-        <p style={{ color: '#6b7280', fontSize: '16px' }}>
+        <p style={{ color: '#6b7280', fontSize: 'clamp(14px, 2vw, 16px)' }}>
           Vue d'ensemble de toutes les releases, déploiements et équipes
         </p>
       </div>
 
       {/* KPI Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', marginBottom: '32px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(250px, 100%), 1fr))', gap: '20px', marginBottom: '32px' }}>
         <div style={{ background: 'white', padding: '24px', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
             <div style={{ width: '48px', height: '48px', background: '#dbeafe', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -81,7 +82,7 @@ export default function ReleaseDashboard() {
       </div>
 
       {/* Active Releases & On-Call Team */}
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px', marginBottom: '32px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(400px, 100%), 1fr))', gap: '24px', marginBottom: '32px' }}>
         {/* Active Releases */}
         <div style={{ background: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
@@ -161,7 +162,7 @@ export default function ReleaseDashboard() {
       </div>
 
       {/* Upcoming Deployments & Service Health */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(400px, 100%), 1fr))', gap: '24px' }}>
         {/* Upcoming Deployments */}
         <div style={{ background: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
           <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#111827', marginBottom: '20px' }}>
