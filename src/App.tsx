@@ -246,8 +246,8 @@ function AppContent() {
             </div>
             {sidebarOpen && (
               <div>
-                <h1 style={{ fontWeight: 'bold', color: '#111827', fontSize: '14px' }}>SocleTracker</h1>
-                <p style={{ fontSize: '12px', color: '#6b7280' }}>Migration Monitor</p>
+                <h1 style={{ fontWeight: 'bold', color: '#111827', fontSize: '14px' }}>DevOps Hub</h1>
+                <p style={{ fontSize: '12px', color: '#6b7280' }}>Release & Debt Manager</p>
               </div>
             )}
           </div>
@@ -275,7 +275,7 @@ function AppContent() {
                 textAlign: 'left'
               }}
             >
-              <span>🚀 Release Manager</span>
+              <span><i className="fas fa-rocket" style={{ marginRight: '6px' }}></i>Release Management</span>
               <i className={`fas fa-chevron-${expandedSections.release ? 'down' : 'right'}`} style={{ fontSize: '10px' }}></i>
             </button>
           )}
@@ -326,7 +326,7 @@ function AppContent() {
                 textAlign: 'left'
               }}
             >
-              <span>📦 Gestion de la dette</span>
+              <span><i className="fas fa-layer-group" style={{ marginRight: '6px' }}></i>Dette Technique</span>
               <i className={`fas fa-chevron-${expandedSections.debt ? 'down' : 'right'}`} style={{ fontSize: '10px' }}></i>
             </button>
           )}
@@ -378,7 +378,7 @@ function AppContent() {
                 textAlign: 'left'
               }}
             >
-              <span>🔧 Outils</span>
+              <span><i className="fas fa-tools" style={{ marginRight: '6px' }}></i>Outils</span>
               <i className={`fas fa-chevron-${expandedSections.tools ? 'down' : 'right'}`} style={{ fontSize: '10px' }}></i>
             </button>
           )}
@@ -430,7 +430,7 @@ function AppContent() {
                 textAlign: 'left'
               }}
             >
-              <span>👤 Personnel</span>
+              <span><i className="fas fa-user-circle" style={{ marginRight: '6px' }}></i>Personnel</span>
               <i className={`fas fa-chevron-${expandedSections.personal ? 'down' : 'right'}`} style={{ fontSize: '10px' }}></i>
             </button>
           )}
@@ -484,7 +484,7 @@ function AppContent() {
                     textAlign: 'left'
                   }}
                 >
-                  <span>🔐 Administration</span>
+                  <span><i className="fas fa-shield-alt" style={{ marginRight: '6px' }}></i>Administration</span>
                   <i className={`fas fa-chevron-${expandedSections.admin ? 'down' : 'right'}`} style={{ fontSize: '10px' }}></i>
                 </button>
               )}
@@ -566,27 +566,26 @@ function AppContent() {
                 {navItems.find(i => i.id === currentView)?.label}
               </h2>
               <p style={{ fontSize: '12px', color: '#6b7280' }}>
-                {currentView === 'release-dashboard' && '🚀 Centre de commande des releases'}
-                {currentView === 'releases' && '🚀 Gestion complète des releases'}
-                {currentView === 'services' && '🚀 Versions installées par environnement'}
-                {currentView === 'release-calendar' && '🚀 Planning des déploiements'}
-                {currentView === 'teams' && '🚀 Équipes et responsabilités'}
-                {currentView === 'dashboard' && "📦 Vue d'ensemble de la dette technique"}
-                {currentView === 'my-apps' && '📦 Applications à migrer'}
-                {currentView === 'environments' && '📦 Monitoring des environnements'}
-                {currentView === 'progress' && '📦 Suivi de la progression'}
-                {currentView === 'calendar' && '📦 Calendrier de migration'}
-                {currentView === 'predictions' && '📦 Prédictions IA'}
-                {currentView === 'reports' && '📦 Rapports et analyses'}
-                {currentView === 'assistant' && '🔧 Assistant intelligent'}
-                {currentView === 'predictions' && '🔧 Estimation IA'}
-                {currentView === 'import-export' && '🔧 Import/Export de données'}
-                {currentView === 'notifications' && '🔧 Configuration des alertes'}
-                {currentView === 'jira' && '🔧 Intégration Jira'}
-                {currentView === 'profile' && '👤 Votre profil'}
-                {currentView === 'my-git' && '👤 Connexions Git'}
-                {currentView === 'my-llm' && '👤 Configuration IA'}
-                {currentView === 'admin' && '🔐 Administration'}
+                {currentView === 'release-dashboard' && 'Centre de commande des releases'}
+                {currentView === 'releases' && 'Gestion complète des releases'}
+                {currentView === 'services' && 'Versions installées par environnement'}
+                {currentView === 'release-calendar' && 'Planning des déploiements'}
+                {currentView === 'teams' && 'Équipes et responsabilités'}
+                {currentView === 'dashboard' && "Vue d'ensemble de la dette technique"}
+                {currentView === 'my-apps' && 'Applications à migrer'}
+                {currentView === 'environments' && 'Monitoring des environnements'}
+                {currentView === 'progress' && 'Suivi de la progression'}
+                {currentView === 'calendar' && 'Calendrier de migration'}
+                {currentView === 'predictions' && 'Prédictions IA'}
+                {currentView === 'reports' && 'Rapports et analyses'}
+                {currentView === 'assistant' && 'Assistant intelligent'}
+                {currentView === 'import-export' && 'Import/Export de données'}
+                {currentView === 'notifications' && 'Configuration des alertes'}
+                {currentView === 'jira' && 'Intégration Jira'}
+                {currentView === 'profile' && 'Votre profil'}
+                {currentView === 'my-git' && 'Connexions Git'}
+                {currentView === 'my-llm' && 'Configuration IA'}
+                {currentView === 'admin' && 'Administration'}
               </p>
             </div>
           </div>

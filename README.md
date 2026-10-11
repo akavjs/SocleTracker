@@ -1,10 +1,10 @@
-# 🚀 SocleTracker
+# DevOps Hub
 
 **Plateforme de Release Management et Gestion de la Dette Technique**
 
-SocleTracker est une solution complète qui combine :
-- **🚀 Release Management** : Suivi des releases, déploiements, planning et équipes
-- **📦 Gestion de la dette technique** : Migration d'applications Kubernetes (ex: 1.24 → OCP 4.14)
+DevOps Hub est une solution complète qui combine :
+- **Release Management** : Suivi des releases, déploiements, planning et équipes
+- **Gestion de la dette technique** : Migration d'applications Kubernetes (ex: 1.24 → OCP 4.14)
 
 ![Version](https://img.shields.io/badge/version-2.0.0-blue)
 ![React](https://img.shields.io/badge/React-18.2-61dafb)
@@ -349,16 +349,16 @@ Les fichiers seront générés dans le dossier `dist/`
 
 ### Navigation
 
-Le menu latéral est organisé en 5 grandes sections **repliables** :
+Le menu latéral est organisé en 5 grandes sections **repliables** avec des icônes professionnelles :
 
-#### 🚀 Release Management
+#### Release Management
 - **Dashboard** : Centre de commande des releases
 - **Releases** : Gestion complète des releases
 - **Registry Versions** : Versions installées par environnement
 - **Planning** : Calendrier des déploiements
 - **Équipes** : Gestion des équipes et on-call
 
-#### 📦 Gestion de la dette (Migration)
+#### Dette Technique (Migration)
 - **Vue d'ensemble** : Dashboard migration
 - **Applications** : Applications à migrer
 - **Environnements** : Monitoring des environnements
@@ -367,25 +367,26 @@ Le menu latéral est organisé en 5 grandes sections **repliables** :
 - **Prédictions** : Estimations IA
 - **Rapports** : Analyses et exports
 
-#### 🔧 Outils
+#### Outils
 - **Assistant IA** : Chatbot intelligent
 - **Notifications** : Configuration des alertes
 - **Jira** : Intégration tickets
 - **Import/Export** : Gestion des données
 
-#### 👤 Personnel
+#### Personnel
 - **Mon profil** : Informations et préférences
 - **Mes connexions Git** : Vos repositories GitLab/GitHub
 - **Mon assistant IA** : Configuration de votre LLM
 
-#### 🔐 Administration (Admin uniquement)
+#### Administration (Admin uniquement)
 - **Administration** : Gestion des utilisateurs
 
-**💡 Fonctionnalités de navigation :**
+**Fonctionnalités de navigation :**
 - **Sections repliables** : Cliquez sur les titres de section pour les réduire/agrandir
 - **Sidebar rétractable** : Bouton hamburger pour masquer/afficher la barre latérale
 - **État persistant** : Les sections ouvertes/fermées sont mémorisées pendant la session
 - **Navigation fluide** : Transitions animées entre les sections
+- **Icônes professionnelles** : Font Awesome au lieu d'emojis
 
 ### Ajouter une application personnelle
 
