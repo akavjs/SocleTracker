@@ -1,8 +1,10 @@
 # 🚀 SocleTracker
 
-**Application de suivi de migration d'applications Kubernetes**
+**Plateforme de Release Management et Gestion de la Dette Technique**
 
-SocleTracker est une solution complète pour piloter la migration d'applications d'un socle Kubernetes vers un autre (ex: Kubernetes 1.24 → OpenShift 4.14). Elle offre un monitoring en temps réel, une gestion des charts Helm, et un assistant IA intelligent.
+SocleTracker est une solution complète qui combine :
+- **🚀 Release Management** : Suivi des releases, déploiements, planning et équipes
+- **📦 Gestion de la dette technique** : Migration d'applications Kubernetes (ex: 1.24 → OCP 4.14)
 
 ![Version](https://img.shields.io/badge/version-2.0.0-blue)
 ![React](https://img.shields.io/badge/React-18.2-61dafb)
@@ -28,87 +30,135 @@ SocleTracker est une solution complète pour piloter la migration d'applications
 
 ## ✨ Fonctionnalités
 
-### 📊 Tableau de bord
+### 🚀 RELEASE MANAGEMENT
+
+#### 📊 Dashboard Release
+- Vue d'ensemble en temps réel de toutes les releases
+- KPIs : nombre de releases, taux de succès, temps moyen de déploiement
+- Releases en cours avec statut et progression
+- Équipe on-call 24/7
+- Prochains déploiements planifiés
+- Santé des services en temps réel
+
+#### 📦 Gestion des Releases
+- Liste complète des releases avec filtres (statut, priorité)
+- Vue détaillée de chaque release :
+  - Pipeline de déploiement (DEV → STAGING → PREPROD → PROD)
+  - Features, fixes, breaking changes
+  - Workflow d'approbation (Tech Lead, QA Lead, Ops Lead)
+  - Équipes impliquées
+  - Tickets Jira liés
+  - Changelog complet
+- Gestion des hotfixes et rollbacks
+
+#### 🔍 Registry des Versions
+- Tableau des versions installées par environnement
+- Santé de chaque service (healthy, degraded, down)
+- Dépendances entre services
+- Dernières dates de déploiement
+- Comparaison des versions entre environnements
+
+#### 📅 Planning des Releases
+- Calendrier mensuel des déploiements
+- Types d'événements : release, hotfix, maintenance, rollback
+- Modal de détails avec équipes et durée
+- Liste des événements à venir
+- Gestion des fenêtres de maintenance
+
+#### 👥 Gestion des Équipes
+- Équipe on-call 24/7 avec contact direct
+- Organisation par équipes (Platform, Identity, Payments, etc.)
+- Rôles : Release Manager, Tech Lead, QA Lead, Ops Lead, Developer, QA, Ops
+- Statut on-call en temps réel
+
+### 📦 GESTION DE LA DETTE TECHNIQUE (Migration)
+
+#### 📊 Tableau de bord Migration
 - Vue d'ensemble de la migration avec statistiques en temps réel
 - Progression globale et par application
 - Alertes sur les applications critiques et problèmes de charts Helm
 - Historique des événements récents
 
-### 📦 Gestion des applications
+#### 📦 Gestion des Applications
 - Liste détaillée des applications à migrer
 - Suivi de la progression par application
 - Gestion des environnements (DEV, STAGING, PREPROD, PROD)
 - Monitoring des pods et replicas en temps réel
 
-### 🔍 Monitoring des environnements
+#### 🔍 Monitoring des Environnements
 - État en temps réel des déploiements
 - Statut des pods (running, failed, crashloop)
 - Détection automatique des incidents
 - Filtrage par environnement
 
-### 📈 Suivi de la progression
+#### 📈 Suivi de la Progression
 - Pipeline de migration en 6 phases
 - Barres de progression par application
 - Calendrier prévisionnel
 - Statistiques globales
 
-### 🤖 Assistant IA
-- Chatbot intelligent pour analyser l'état de la migration
-- Réponses contextuelles sur les applications, environnements, charts Helm
-- Recommandations automatiques
-- Configuration personnalisable (OpenAI, Anthropic, Ollama, Custom)
-
-### 🔗 Intégration Git
-- Connexion à GitLab et GitHub
-- Vérification automatique des charts Helm
-- Détection des ressources manquantes ou obsolètes
-- Synchronisation en temps réel
-
-### 👥 Système multi-utilisateurs
-- Profils utilisateurs avec espace personnel
-- Gestion des applications personnelles
-- Configurations Git et IA isolées par utilisateur
-- Rôles : Administrateur et Utilisateur
-
-### 📥 Import/Export
-- Export en JSON ou CSV
-- Import depuis fichiers JSON ou CSV
-- Validation automatique des données
-- Mapping intelligent des colonnes CSV
-
-### 🔔 Notifications
-- Configuration de webhooks (Slack, Teams, Email)
-- Alertes sur événements (app bloquée, migration terminée, etc.)
-- Activation/désactivation par webhook
-- Test de connexion
-
-### 📊 Rapports
-- Génération de rapports PDF, Excel, CSV
-- Aperçu avec statistiques détaillées
-- Sélection de période personnalisable
-- Export automatique
-
-### 📅 Calendrier de migration
-- Vue mensuelle avec événements
-- Timeline des migrations
-- Gestion des dépendances entre applications
-- Code couleur par statut
-
-### 🧠 Prédictions IA
+#### 🧠 Prédictions IA
 - Estimation de la durée restante par application
 - Analyse des facteurs de risque
 - Score de confiance
 - Recommandations basées sur l'historique
 
-### 🔗 Intégration Jira
+#### 📊 Rapports
+- Génération de rapports PDF, Excel, CSV
+- Aperçu avec statistiques détaillées
+- Sélection de période personnalisable
+- Export automatique
+
+### 🔧 OUTILS COMMUNS
+
+#### 🤖 Assistant IA
+- Chatbot intelligent pour analyser l'état de la migration
+- Réponses contextuelles sur les applications, environnements, charts Helm
+- Recommandations automatiques
+- Configuration personnalisable (OpenAI, Anthropic, Ollama, Custom)
+
+#### 🔗 Intégration Git
+- Connexion à GitLab et GitHub
+- Vérification automatique des charts Helm
+- Détection des ressources manquantes ou obsolètes
+- Synchronisation en temps réel
+
+#### 🔔 Notifications
+- Configuration de webhooks (Slack, Teams, Email)
+- Alertes sur événements (app bloquée, migration terminée, etc.)
+- Activation/désactivation par webhook
+- Test de connexion
+
+#### 🔗 Intégration Jira
 - Configuration de la connexion Jira
 - Synchronisation des tickets
 - Affichage des tickets liés aux applications
 - Création de nouveaux tickets
 
+#### 📥 Import/Export
+- Export en JSON ou CSV
+- Import depuis fichiers JSON ou CSV
+- Validation automatique des données
+- Mapping intelligent des colonnes CSV
+
+### 👤 ESPACE PERSONNEL
+
+#### 👥 Système multi-utilisateurs
+- Profils utilisateurs avec espace personnel
+- Gestion des applications personnelles
+- Configurations Git et IA isolées par utilisateur
+- Rôles : Administrateur et Utilisateur
+
 ---
 
 ## 🆕 Nouveautés v2.0
+
+### 🚀 Release Management (Nouveau module)
+- **Dashboard Release** : centre de commande avec KPIs en temps réel
+- **Gestion des Releases** : workflow complet avec pipeline de déploiement
+- **Registry des Versions** : versions installées par environnement
+- **Planning des Releases** : calendrier avec gestion des dépendances
+- **Gestion des Équipes** : on-call 24/7 et responsabilités
 
 ### 📊 Analytics & Reporting
 - **Rapports PDF/Excel** générés automatiquement
@@ -135,7 +185,7 @@ SocleTracker est une solution complète pour piloter la migration d'applications
 - **Détection de patterns** : identifier les applications similaires
 
 ### 🔌 Intégrations DevOps
-- **Jira** : synchronisation des tickets de migration
+- **Jira** : synchronisation des tickets
 - **GitLab/GitHub** : vérification des charts Helm
 - **Prometheus/Grafana** : métriques en temps réel
 - **Slack/Teams** : notifications d'équipe
@@ -147,33 +197,50 @@ SocleTracker est une solution complète pour piloter la migration d'applications
 ```
 socletracker/
 ├── src/
-│   ├── components/           # Composants React
-│   │   ├── Dashboard.tsx
-│   │   ├── ApplicationList.tsx
-│   │   ├── ApplicationDetail.tsx
-│   │   ├── EnvironmentMonitor.tsx
-│   │   ├── MigrationProgress.tsx
-│   │   ├── LLMChat.tsx
-│   │   ├── ImportExport.tsx
-│   │   ├── AdminDashboard.tsx
-│   │   ├── MyApplications.tsx
-│   │   ├── MyGitConfig.tsx
-│   │   ├── MyLLMConfig.tsx
-│   │   ├── UserProfile.tsx
-│   │   ├── Notifications.tsx
-│   │   ├── Reports.tsx
-│   │   ├── MigrationCalendar.tsx
-│   │   ├── AIPredictions.tsx
-│   │   └── JiraIntegration.tsx
+│   ├── components/              # Composants React
+│   │   ├── 🚀 RELEASE MANAGEMENT
+│   │   │   ├── ReleaseDashboard.tsx      # Dashboard releases
+│   │   │   ├── ReleasesList.tsx          # Liste des releases
+│   │   │   ├── ServicesRegistry.tsx      # Registry versions
+│   │   │   ├── ReleaseCalendarView.tsx   # Planning releases
+│   │   │   └── TeamsManagement.tsx       # Gestion équipes
+│   │   │
+│   │   ├── 📦 GESTION DE LA DETTE
+│   │   │   ├── Dashboard.tsx             # Dashboard migration
+│   │   │   ├── ApplicationList.tsx       # Liste applications
+│   │   │   ├── ApplicationDetail.tsx     # Détail application
+│   │   │   ├── EnvironmentMonitor.tsx    # Monitoring env
+│   │   │   ├── MigrationProgress.tsx     # Progression
+│   │   │   ├── MigrationCalendar.tsx     # Calendrier migration
+│   │   │   ├── AIPredictions.tsx         # Prédictions IA
+│   │   │   └── Reports.tsx               # Rapports
+│   │   │
+│   │   ├── 🔧 OUTILS COMMUNS
+│   │   │   ├── LLMChat.tsx               # Assistant IA
+│   │   │   ├── Notifications.tsx         # Notifications
+│   │   │   ├── JiraIntegration.tsx       # Intégration Jira
+│   │   │   └── ImportExport.tsx          # Import/Export
+│   │   │
+│   │   └── 👤 ESPACE PERSONNEL
+│   │       ├── UserProfile.tsx           # Profil utilisateur
+│   │       ├── MyApplications.tsx        # Mes applications
+│   │       ├── MyGitConfig.tsx           # Mes connexions Git
+│   │       ├── MyLLMConfig.tsx           # Mon assistant IA
+│   │       └── AdminDashboard.tsx        # Administration
+│   │
 │   ├── context/
-│   │   └── UserContext.tsx    # Gestion de l'état utilisateur
+│   │   └── UserContext.tsx        # Gestion de l'état utilisateur
 │   ├── data/
-│   │   └── applications.ts  # Données et types
-│   ├── App.tsx               # Composant principal
-│   ├── main.tsx              # Point d'entrée
-│   └── index.css             # Styles globaux
-├── public/                   # Assets statiques
-├── dist/                     # Build de production
+│   │   ├── applications.ts       # Données migration
+│   │   └── releases.ts           # Données releases
+│   ├── App.tsx                   # Composant principal
+│   ├── main.tsx                  # Point d'entrée
+│   └── index.css                 # Styles globaux
+├── public/                       # Assets statiques
+├── dist/                         # Build de production
+├── Dockerfile                    # Configuration Docker
+├── docker-compose.yml            # Docker Compose
+├── nginx.conf                    # Configuration Nginx
 ├── index.html
 ├── package.json
 ├── tsconfig.json
@@ -282,24 +349,32 @@ Les fichiers seront générés dans le dossier `dist/`
 
 ### Navigation
 
-Le menu latéral est organisé en 3 sections :
+Le menu latéral est organisé en 4 grandes sections :
 
-#### 📁 Général
-- **Tableau de bord** : Vue d'ensemble
-- **Applications** : Liste globale des applications
-- **Environnements** : Monitoring temps réel
-- **Progression** : Suivi de la migration
-- **Calendrier** : Planification des migrations
-- **Assistant IA** : Chatbot partagé
-- **Prédictions IA** : Estimation de la durée
-- **Import/Export** : Gestion des données
-- **Rapports** : Génération de rapports
+#### 🚀 Release Management
+- **Dashboard** : Centre de commande des releases
+- **Releases** : Gestion complète des releases
+- **Registry Versions** : Versions installées par environnement
+- **Planning** : Calendrier des déploiements
+- **Équipes** : Gestion des équipes et on-call
+
+#### 📦 Gestion de la dette (Migration)
+- **Vue d'ensemble** : Dashboard migration
+- **Applications** : Applications à migrer
+- **Environnements** : Monitoring des environnements
+- **Progression** : Suivi de l'avancement
+- **Calendrier** : Planning de migration
+- **Prédictions** : Estimations IA
+- **Rapports** : Analyses et exports
+
+#### 🔧 Outils
+- **Assistant IA** : Chatbot intelligent
 - **Notifications** : Configuration des alertes
-- **Jira** : Intégration avec Jira
+- **Jira** : Intégration tickets
+- **Import/Export** : Gestion des données
 
 #### 👤 Personnel
 - **Mon profil** : Informations et préférences
-- **Mes applications** : Vos applications personnelles
 - **Mes connexions Git** : Vos repositories GitLab/GitHub
 - **Mon assistant IA** : Configuration de votre LLM
 

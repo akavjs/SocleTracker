@@ -30,25 +30,34 @@ function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   const navItems = [
-    { id: 'release-dashboard' as View, label: 'Release Hub', icon: 'fa-rocket', section: 'release', highlight: true },
+    // 🚀 RELEASE MANAGEMENT
+    { id: 'release-dashboard' as View, label: 'Dashboard', icon: 'fa-rocket', section: 'release', highlight: true },
     { id: 'releases' as View, label: 'Releases', icon: 'fa-box', section: 'release' },
     { id: 'services' as View, label: 'Registry Versions', icon: 'fa-server', section: 'release' },
-    { id: 'release-calendar' as View, label: 'Calendrier', icon: 'fa-calendar-alt', section: 'release' },
+    { id: 'release-calendar' as View, label: 'Planning', icon: 'fa-calendar-alt', section: 'release' },
     { id: 'teams' as View, label: 'Équipes', icon: 'fa-users', section: 'release' },
-    { id: 'dashboard' as View, label: 'Tableau de bord', icon: 'fa-th-large', section: 'general' },
-    { id: 'my-apps' as View, label: 'Mes applications', icon: 'fa-cubes', section: 'general' },
-    { id: 'environments' as View, label: 'Environnements', icon: 'fa-server', section: 'general' },
-    { id: 'progress' as View, label: 'Progression', icon: 'fa-chart-line', section: 'general' },
-    { id: 'calendar' as View, label: 'Calendrier Migration', icon: 'fa-calendar', section: 'general' },
-    { id: 'assistant' as View, label: 'Assistant IA', icon: 'fa-robot', section: 'general' },
-    { id: 'predictions' as View, label: 'Prédictions IA', icon: 'fa-magic', section: 'general' },
-    { id: 'import-export' as View, label: 'Import/Export', icon: 'fa-file-import', section: 'general' },
-    { id: 'reports' as View, label: 'Rapports', icon: 'fa-file-alt', section: 'general' },
-    { id: 'notifications' as View, label: 'Notifications', icon: 'fa-bell', section: 'general' },
-    { id: 'jira' as View, label: 'Jira', icon: 'fa-tasks', section: 'general' },
+    
+    // 📦 GESTION DE LA DETTE (Migration)
+    { id: 'dashboard' as View, label: 'Vue d\'ensemble', icon: 'fa-th-large', section: 'debt' },
+    { id: 'my-apps' as View, label: 'Applications', icon: 'fa-cubes', section: 'debt' },
+    { id: 'environments' as View, label: 'Environnements', icon: 'fa-server', section: 'debt' },
+    { id: 'progress' as View, label: 'Progression', icon: 'fa-chart-line', section: 'debt' },
+    { id: 'calendar' as View, label: 'Calendrier', icon: 'fa-calendar', section: 'debt' },
+    { id: 'predictions' as View, label: 'Prédictions', icon: 'fa-magic', section: 'debt' },
+    { id: 'reports' as View, label: 'Rapports', icon: 'fa-file-alt', section: 'debt' },
+    
+    // 🔧 OUTILS COMMUNS
+    { id: 'assistant' as View, label: 'Assistant IA', icon: 'fa-robot', section: 'tools' },
+    { id: 'notifications' as View, label: 'Notifications', icon: 'fa-bell', section: 'tools' },
+    { id: 'jira' as View, label: 'Jira', icon: 'fa-tasks', section: 'tools' },
+    { id: 'import-export' as View, label: 'Import/Export', icon: 'fa-file-import', section: 'tools' },
+    
+    // 👤 PERSONNEL
     { id: 'profile' as View, label: 'Mon profil', icon: 'fa-user-circle', section: 'personal' },
     { id: 'my-git' as View, label: 'Mes connexions Git', icon: 'fa-code-branch', section: 'personal' },
     { id: 'my-llm' as View, label: 'Mon assistant IA', icon: 'fa-brain', section: 'personal' },
+    
+    // 🔐 ADMIN
     { id: 'admin' as View, label: 'Administration', icon: 'fa-user-shield', section: 'admin', adminOnly: true },
   ];
 
@@ -58,7 +67,8 @@ function AppContent() {
   });
 
   const releaseItems = filteredNavItems.filter(i => i.section === 'release');
-  const generalItems = filteredNavItems.filter(i => i.section === 'general');
+  const debtItems = filteredNavItems.filter(i => i.section === 'debt');
+  const toolsItems = filteredNavItems.filter(i => i.section === 'tools');
   const personalItems = filteredNavItems.filter(i => i.section === 'personal');
   const adminItems = filteredNavItems.filter(i => i.section === 'admin');
 
@@ -262,14 +272,47 @@ function AppContent() {
             </button>
           ))}
 
-          {/* General Section */}
+          {/* Gestion de la dette Section */}
           {sidebarOpen && (
             <p style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', padding: '16px 12px 4px', letterSpacing: '0.05em' }}>
-              Migration
+              📦 Gestion de la dette
             </p>
           )}
           {!sidebarOpen && <div style={{ height: '16px' }}></div>}
-          {generalItems.map(item => (
+          {debtItems.map(item => (
+            <button
+              key={item.id}
+              onClick={() => setCurrentView(item.id)}
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '10px 12px',
+                borderRadius: '8px',
+                fontSize: '14px',
+                fontWeight: 500,
+                border: 'none',
+                cursor: 'pointer',
+                background: currentView === item.id ? '#eef2ff' : 'transparent',
+                color: currentView === item.id ? '#4f46e5' : '#4b5563',
+                transition: 'all 0.2s',
+                textAlign: 'left'
+              }}
+            >
+              <i className={`fas ${item.icon}`} style={{ width: '20px', textAlign: 'center' }}></i>
+              {sidebarOpen && <span>{item.label}</span>}
+            </button>
+          ))}
+
+          {/* Outils communs Section */}
+          {sidebarOpen && (
+            <p style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', padding: '16px 12px 4px', letterSpacing: '0.05em' }}>
+              🔧 Outils
+            </p>
+          )}
+          {!sidebarOpen && <div style={{ height: '16px' }}></div>}
+          {toolsItems.map(item => (
             <button
               key={item.id}
               onClick={() => setCurrentView(item.id)}
@@ -298,7 +341,7 @@ function AppContent() {
           {/* Personal Section */}
           {sidebarOpen && (
             <p style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', padding: '16px 12px 4px', letterSpacing: '0.05em' }}>
-              Personnel
+              👤 Personnel
             </p>
           )}
           {!sidebarOpen && <div style={{ height: '16px' }}></div>}
@@ -414,26 +457,27 @@ function AppContent() {
                 {navItems.find(i => i.id === currentView)?.label}
               </h2>
               <p style={{ fontSize: '12px', color: '#6b7280' }}>
-                {currentView === 'release-dashboard' && 'Centre de commande des releases'}
-                {currentView === 'releases' && 'Gestion complète des releases'}
-                {currentView === 'services' && 'Versions installées par environnement'}
-                {currentView === 'release-calendar' && 'Planification des déploiements'}
-                {currentView === 'teams' && 'Équipes et responsabilités'}
-                {currentView === 'dashboard' && "Vue d'ensemble"}
-                {currentView === 'my-apps' && 'Vos applications personnelles'}
-                {currentView === 'environments' && 'Monitoring en temps réel'}
-                {currentView === 'progress' && "Suivi de l'avancement"}
-                {currentView === 'calendar' && 'Planification des migrations'}
-                {currentView === 'assistant' && 'Assistant intelligent partagé'}
-                {currentView === 'predictions' && 'Estimation IA de la durée'}
-                {currentView === 'import-export' && 'Importez et exportez vos données'}
-                {currentView === 'reports' && 'Générez des rapports détaillés'}
-                {currentView === 'notifications' && 'Configurez vos alertes'}
-                {currentView === 'jira' && 'Synchronisation avec Jira'}
-                {currentView === 'profile' && 'Gérez votre profil'}
-                {currentView === 'my-git' && 'Vos connexions GitLab/GitHub'}
-                {currentView === 'my-llm' && 'Configurez votre assistant IA'}
-                {currentView === 'admin' && 'Gestion des utilisateurs'}
+                {currentView === 'release-dashboard' && '🚀 Centre de commande des releases'}
+                {currentView === 'releases' && '🚀 Gestion complète des releases'}
+                {currentView === 'services' && '🚀 Versions installées par environnement'}
+                {currentView === 'release-calendar' && '🚀 Planning des déploiements'}
+                {currentView === 'teams' && '🚀 Équipes et responsabilités'}
+                {currentView === 'dashboard' && "📦 Vue d'ensemble de la dette technique"}
+                {currentView === 'my-apps' && '📦 Applications à migrer'}
+                {currentView === 'environments' && '📦 Monitoring des environnements'}
+                {currentView === 'progress' && '📦 Suivi de la progression'}
+                {currentView === 'calendar' && '📦 Calendrier de migration'}
+                {currentView === 'predictions' && '📦 Prédictions IA'}
+                {currentView === 'reports' && '📦 Rapports et analyses'}
+                {currentView === 'assistant' && '🔧 Assistant intelligent'}
+                {currentView === 'predictions' && '🔧 Estimation IA'}
+                {currentView === 'import-export' && '🔧 Import/Export de données'}
+                {currentView === 'notifications' && '🔧 Configuration des alertes'}
+                {currentView === 'jira' && '🔧 Intégration Jira'}
+                {currentView === 'profile' && '👤 Votre profil'}
+                {currentView === 'my-git' && '👤 Connexions Git'}
+                {currentView === 'my-llm' && '👤 Configuration IA'}
+                {currentView === 'admin' && '🔐 Administration'}
               </p>
             </div>
           </div>
