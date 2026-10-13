@@ -5,6 +5,29 @@ Tous les changements notables de Relivio seront documentés dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère à [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [2.1.0] - 2026-01-15
+
+### Amélioré
+- ✨ **Sidebar adaptative** : Mode ouvert (256px) et fermé (80px) avec icônes
+- 🎨 **Nouvelle identité visuelle** : Logo ∞ (infini) avec gradient violet
+- 📱 **Responsive complet** : Polices fluides, grilles adaptatives, largeurs 100%
+- 🏗️ **Architecture documentée** : Nouveau fichier ARCHITECTURE.md détaillé
+- 🎯 **Navigation améliorée** : Sections repliables, tooltips, état persistant
+- 🔧 **Correction bugs** : Sidebar qui disparaissait, débordements responsive
+
+### Ajouté
+- 📄 **ARCHITECTURE.md** : Documentation technique complète
+- 🎨 **Design System** : Couleurs, typographie, composants standardisés
+- 🔄 **Mode sidebar fermé** : Icônes principales avec tooltips
+- 📊 **Architecture technique** : Diagrammes et explications détaillées
+
+### Technique
+- ♻️ **Refactoring** : Suppression des `maxWidth` fixes au profit de `width: 100%`
+- 🎨 **Styles inline** : Pas de dépendance CSS externe
+- 📐 **Grilles adaptatives** : `repeat(auto-fit, minmax(...))`
+- 🔤 **Polices fluides** : `clamp()` pour adaptation automatique
+- 🏗️ **Sidebar stable** : `minWidth` et `zIndex` pour éviter les débordements
+
 ## [2.0.0] - 2026-01-15
 
 ### Ajouté

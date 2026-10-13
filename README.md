@@ -4,19 +4,32 @@
 
 > *Un nom moderne, fluide et facile à prononcer. Il évoque les releases, leur cycle de vie et l'amélioration continue.*
 
-Relivio est une plateforme complète qui combine :
-- **Release Management** : Suivi des releases, déploiements, planning et équipes
-- **Gestion de la dette technique** : Migration d'applications Kubernetes (ex: 1.24 → OCP 4.14)
-
-![Version](https://img.shields.io/badge/version-2.0.0-blue)
+![Logo](https://img.shields.io/badge/logo-∞_infinity-6366f1)
+![Version](https://img.shields.io/badge/version-2.1.0-blue)
 ![React](https://img.shields.io/badge/React-18.2-61dafb)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178c6)
+![Responsive](https://img.shields.io/badge/responsive-100%25-green)
 ![License](https://img.shields.io/badge/license-MIT-green)
+
+## 🎯 Présentation
+
+Relivio est une plateforme DevOps complète qui unifie deux aspects cruciaux de la gestion applicative :
+
+- **🚀 Release Management** : Pilotage complet du cycle de vie des releases, des déploiements et des équipes
+- **📦 Dette Technique** : Suivi et gestion des migrations d'applications (ex: Kubernetes 1.24 → OCP 4.14)
+
+### 🎨 Identité visuelle
+
+- **Logo** : Symbole ∞ (infini) représentant le cycle de vie continu des releases
+- **Couleurs** : Gradient violet moderne (#6366f1 → #8b5cf6)
+- **Style** : Interface épurée, professionnelle et responsive
 
 ## 📋 Table des matières
 
+- [Présentation](#-présentation)
 - [Fonctionnalités](#-fonctionnalités)
 - [Architecture](#-architecture)
+- [Interface utilisateur](#-interface-utilisateur)
 - [Prérequis](#-prérequis)
 - [Installation](#-installation)
 - [Utilisation](#-utilisation)
@@ -27,6 +40,7 @@ Relivio est une plateforme complète qui combine :
 - [FAQ](#-faq)
 - [Contribution](#-contribution)
 - [Licence](#-licence)
+- [Documentation technique](#-documentation-technique)
 
 ---
 
@@ -196,67 +210,169 @@ Relivio est une plateforme complète qui combine :
 
 ## 🏗️ Architecture
 
+### Structure du projet
+
 ```
-socletracker/
+relivio/
 ├── src/
-│   ├── components/              # Composants React
+│   ├── components/                    # Composants React
 │   │   ├── 🚀 RELEASE MANAGEMENT
-│   │   │   ├── ReleaseDashboard.tsx      # Dashboard releases
-│   │   │   ├── ReleasesList.tsx          # Liste des releases
-│   │   │   ├── ServicesRegistry.tsx      # Registry versions
-│   │   │   ├── ReleaseCalendarView.tsx   # Planning releases
-│   │   │   └── TeamsManagement.tsx       # Gestion équipes
+│   │   │   ├── ReleaseDashboard.tsx      # Dashboard releases (KPIs, santé services)
+│   │   │   ├── ReleasesList.tsx          # Liste des releases avec filtres
+│   │   │   ├── ServicesRegistry.tsx      # Registry des versions par env
+│   │   │   ├── ReleaseCalendarView.tsx   # Planning des déploiements
+│   │   │   └── TeamsManagement.tsx       # Gestion des équipes et on-call
 │   │   │
-│   │   ├── 📦 GESTION DE LA DETTE
+│   │   ├── 📦 DETTE TECHNIQUE
 │   │   │   ├── Dashboard.tsx             # Dashboard migration
-│   │   │   ├── ApplicationList.tsx       # Liste applications
-│   │   │   ├── ApplicationDetail.tsx     # Détail application
-│   │   │   ├── EnvironmentMonitor.tsx    # Monitoring env
-│   │   │   ├── MigrationProgress.tsx     # Progression
-│   │   │   ├── MigrationCalendar.tsx     # Calendrier migration
+│   │   │   ├── ApplicationList.tsx       # Liste des applications
+│   │   │   ├── ApplicationDetail.tsx     # Détail d'une application
+│   │   │   ├── EnvironmentMonitor.tsx    # Monitoring temps réel
+│   │   │   ├── MigrationProgress.tsx     # Suivi de la progression
+│   │   │   ├── MigrationCalendar.tsx     # Calendrier de migration
 │   │   │   ├── AIPredictions.tsx         # Prédictions IA
-│   │   │   └── Reports.tsx               # Rapports
+│   │   │   └── Reports.tsx               # Rapports et analyses
 │   │   │
 │   │   ├── 🔧 OUTILS COMMUNS
-│   │   │   ├── LLMChat.tsx               # Assistant IA
-│   │   │   ├── Notifications.tsx         # Notifications
+│   │   │   ├── LLMChat.tsx               # Assistant IA (chatbot)
+│   │   │   ├── Notifications.tsx         # Configuration des alertes
 │   │   │   ├── JiraIntegration.tsx       # Intégration Jira
-│   │   │   └── ImportExport.tsx          # Import/Export
+│   │   │   └── ImportExport.tsx          # Import/Export JSON/CSV
 │   │   │
 │   │   └── 👤 ESPACE PERSONNEL
 │   │       ├── UserProfile.tsx           # Profil utilisateur
-│   │       ├── MyApplications.tsx        # Mes applications
+│   │       ├── MyApplications.tsx        # Mes applications perso
 │   │       ├── MyGitConfig.tsx           # Mes connexions Git
-│   │       ├── MyLLMConfig.tsx           # Mon assistant IA
-│   │       └── AdminDashboard.tsx        # Administration
+│   │       ├── MyLLMConfig.tsx           # Configuration IA perso
+│   │       └── AdminDashboard.tsx        # Administration (admin)
 │   │
 │   ├── context/
-│   │   └── UserContext.tsx        # Gestion de l'état utilisateur
+│   │   └── UserContext.tsx              # État global utilisateur
 │   ├── data/
-│   │   ├── applications.ts       # Données migration
-│   │   └── releases.ts           # Données releases
-│   ├── App.tsx                   # Composant principal
-│   ├── main.tsx                  # Point d'entrée
-│   └── index.css                 # Styles globaux
-├── public/                       # Assets statiques
-├── dist/                         # Build de production
-├── Dockerfile                    # Configuration Docker
-├── docker-compose.yml            # Docker Compose
-├── nginx.conf                    # Configuration Nginx
-├── index.html
-├── package.json
-├── tsconfig.json
-├── vite.config.js
-└── README.md
+│   │   ├── applications.ts             # Données migration (apps, services)
+│   │   └── releases.ts                 # Données releases (releases, équipes)
+│   ├── App.tsx                         # Composant principal + routing
+│   ├── main.tsx                        # Point d'entrée React
+│   └── index.css                       # Styles globaux (Tailwind)
+│
+├── public/                              # Assets statiques
+├── dist/                                # Build de production
+├── Dockerfile                           # Configuration Docker multi-stage
+├── docker-compose.yml                   # Docker Compose (dev)
+├── docker-compose.prod.yml              # Docker Compose (prod)
+├── nginx.conf                           # Configuration Nginx
+├── .dockerignore                        # Fichiers exclus du build Docker
+├── .env.example                         # Template variables d'environnement
+├── index.html                           # Point d'entrée HTML
+├── package.json                         # Dépendances et scripts
+├── tsconfig.json                        # Configuration TypeScript
+├── vite.config.js                       # Configuration Vite
+├── README.md                            # Documentation principale
+├── CHANGELOG.md                         # Historique des versions
+├── CONTRIBUTING.md                      # Guide de contribution
+└── LICENSE                              # Licence MIT
 ```
 
+### Architecture technique
+
+#### Frontend
+- **React 18.2** : Framework UI avec hooks et contexte
+- **TypeScript 5.0** : Typage statique pour la robustesse
+- **Vite 6.4** : Build tool ultra-rapide
+- **Styles inline** : Pas de dépendance CSS externe (responsive natif)
+- **Font Awesome 6** : Icônes professionnelles
+
+#### Navigation
+- **Sidebar adaptative** : 
+  - Mode ouvert (256px) : Menu complet avec sections repliables
+  - Mode fermé (80px) : Icônes principales uniquement
+- **Sections repliables** : 5 grandes catégories (Release, Dette, Outils, Personnel, Admin)
+- **État persistant** : Mémorisation des sections ouvertes/fermées
+- **Responsive** : Grilles adaptatives avec `repeat(auto-fit, minmax(...))`
+
+#### Gestion d'état
+- **UserContext** : État global utilisateur (profil, préférences, configs)
+- **État local** : `useState` pour les interactions composant
+- **Données mockées** : Fichiers `data/*.ts` pour démonstration
+
+#### Responsive Design
+- **Polices fluides** : `clamp(20px, 3vw, 24px)` pour adaptation automatique
+- **Grilles adaptatives** : `repeat(auto-fit, minmax(min(400px, 100%), 1fr))`
+- **Largeurs fluides** : `width: '100%'` au lieu de `maxWidth` fixes
+- **Sidebar stable** : `minWidth` et `zIndex` pour éviter les débordements
+
 ### Technologies utilisées
-- **React 18.2** - Framework UI
+- **React 18.2** - Framework UI avec hooks
 - **TypeScript 5.0** - Typage statique
-- **Vite 6.4** - Build tool
-- **Tailwind CSS 4.1** - Styling
-- **Lucide React** - Icônes
-- **Framer Motion** - Animations
+- **Vite 6.4** - Build tool ultra-rapide
+- **Font Awesome 6** - Icônes professionnelles
+- **Styles inline** - Responsive natif sans dépendance CSS
+
+### 🎨 Interface utilisateur
+
+#### Navigation latérale (Sidebar)
+
+La sidebar offre deux modes de navigation :
+
+**Mode ouvert (256px)**
+```
+┌─────────────────────────┐
+│  ∞ Relivio              │
+│  Release & Debt Manager │
+├─────────────────────────┤
+│ ▼ RELEASE MANAGEMENT    │
+│   🚀 Dashboard          │
+│   📦 Releases           │
+│   🔍 Registry Versions  │
+│   📅 Planning           │
+│   👥 Équipes            │
+├─────────────────────────┤
+│ ▼ DETTE TECHNIQUE       │
+│   📊 Vue d'ensemble     │
+│   📦 Applications       │
+│   ...                   │
+└─────────────────────────┘
+```
+
+**Mode fermé (80px)**
+```
+┌────┐
+│ ∞  │
+├────┤
+│ 🚀 │  ← Release Dashboard
+│ 📊 │  ← Vue d'ensemble
+│ 🤖 │  ← Assistant IA
+│ 👤 │  ← Mon profil
+│ 🛡️ │  ← Administration
+└────┘
+```
+
+**Fonctionnalités**
+- ✅ **Sections repliables** : Cliquez sur les titres pour réduire/agrandir
+- ✅ **Bouton hamburger** (☰) : Bascule entre mode ouvert/fermé
+- ✅ **Tooltips** : En mode fermé, survolez les icônes pour voir les labels
+- ✅ **État persistant** : Les sections ouvertes/fermées sont mémorisées
+- ✅ **Responsive** : S'adapte à toutes les tailles d'écran
+
+#### Design System
+
+**Couleurs**
+- Primaire : `#6366f1` → `#8b5cf6` (gradient violet)
+- Succès : `#10b981` (vert)
+- Warning : `#f59e0b` (orange)
+- Erreur : `#ef4444` (rouge)
+- Info : `#3b82f6` (bleu)
+
+**Typographie**
+- Titres : `clamp(20px, 3vw, 32px)`
+- Sous-titres : `clamp(14px, 2vw, 16px)`
+- Corps : `14px`
+- Labels : `12px`
+
+**Composants**
+- Cards : `border-radius: 12px`, `box-shadow: 0 2px 8px rgba(0,0,0,0.05)`
+- Boutons : `border-radius: 8px`, transitions fluides
+- Badges : `border-radius: 8px`, couleurs contextuelles
 
 ---
 
@@ -1036,7 +1152,18 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de 
 
 ---
 
-## 📚 Documentation supplémentaire
+## 📚 Documentation technique
+
+Pour une compréhension approfondie de l'architecture et des choix techniques :
+
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** : Documentation technique complète
+  - Architecture des composants
+  - Système de navigation (sidebar adaptative)
+  - Responsive design
+  - Gestion d'état
+  - Performance et optimisations
+  - Déploiement Docker
+  - Sécurité
 
 - **[CHANGELOG.md](CHANGELOG.md)** : Historique complet des versions et changements
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** : Guide pour contribuer au projet
@@ -1048,7 +1175,7 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de 
 
 Pour toute question ou problème :
 - Ouvrez une issue sur GitHub
-- Contactez l'équipe : support@socletracker.com
+- Contactez l'équipe : support@relivio.dev
 
 ---
 
@@ -1056,9 +1183,11 @@ Pour toute question ou problème :
 
 - React Team pour le framework
 - Vite Team pour le build tool
-- Tailwind CSS pour le design system
+- Font Awesome pour les icônes
 - Toute la communauté open source
 
 ---
 
-**Développé avec ❤️ pour faciliter les migrations Kubernetes**
+**Développé avec ❤️ par l'équipe Relivio**
+
+*Release & Debt Manager - Le cycle de vie continu de vos applications*
