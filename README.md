@@ -5,11 +5,12 @@
 > *Un nom moderne, fluide et facile à prononcer. Il évoque les releases, leur cycle de vie et l'amélioration continue.*
 
 ![Logo](https://img.shields.io/badge/logo-∞_infinity-6366f1)
-![Version](https://img.shields.io/badge/version-2.1.0-blue)
+![Version](https://img.shields.io/badge/version-2.2.0-blue)
 ![React](https://img.shields.io/badge/React-18.2-61dafb)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178c6)
 ![Responsive](https://img.shields.io/badge/responsive-100%25-green)
 ![License](https://img.shields.io/badge/license-MIT-green)
+![Bundle Size](https://img.shields.io/badge/bundle-358KB-orange)
 
 ## 🎯 Présentation
 
@@ -23,6 +24,15 @@ Relivio est une plateforme DevOps complète qui unifie deux aspects cruciaux de 
 - **Logo** : Symbole ∞ (infini) représentant le cycle de vie continu des releases
 - **Couleurs** : Gradient violet moderne (#6366f1 → #8b5cf6)
 - **Style** : Interface épurée, professionnelle et responsive
+
+### ✨ Fonctionnalités clés
+
+- ⌨️ **Raccourcis clavier** : Navigation ultra-rapide (Ctrl+K, Ctrl+D, etc.)
+- 🔍 **Recherche globale** : Trouvez instantanément n'importe quelle release ou application
+- 🌙 **Mode sombre** : Confort visuel avec persistance automatique
+- ⭐ **Favoris** : Épinglez vos éléments importants pour un accès rapide
+- 📄 **Export PDF** : Générez des rapports professionnels en un clic
+- 📱 **100% Responsive** : S'adapte à tous les écrans
 
 ## 📋 Table des matières
 

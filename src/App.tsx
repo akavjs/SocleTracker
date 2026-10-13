@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { UserProvider, useUser } from './context/UserContext';
 import Dashboard from './components/Dashboard';
 import MyApplications from './components/MyApplications';
@@ -20,6 +20,11 @@ import ReleasesList from './components/ReleasesList';
 import ServicesRegistry from './components/ServicesRegistry';
 import ReleaseCalendarView from './components/ReleaseCalendarView';
 import TeamsManagement from './components/TeamsManagement';
+import GlobalSearch from './components/GlobalSearch';
+import ShortcutsModal from './components/ShortcutsModal';
+import { useKeyboardShortcuts, defaultShortcuts } from './hooks/useKeyboardShortcuts';
+import { useDarkMode } from './hooks/useDarkMode';
+import { useExportPDF } from './hooks/useExportPDF';
 
 type View = 'dashboard' | 'my-apps' | 'environments' | 'progress' | 'assistant' | 'import-export' | 'admin' | 'my-git' | 'my-llm' | 'profile' | 'notifications' | 'reports' | 'calendar' | 'predictions' | 'jira' | 'release-dashboard' | 'releases' | 'services' | 'release-calendar' | 'teams';
 
@@ -36,11 +41,43 @@ function AppContent() {
     admin: false
   });
 
+  // Nouveaux états pour les fonctionnalités légères
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isShortcutsModalOpen, setIsShortcutsModalOpen] = useState(false);
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const { exportToPDF } = useExportPDF();
+
+  // Écouter les événements personnalisés des raccourcis
+  useEffect(() => {
+    const handleOpenSearch = () => setIsSearchOpen(true);
+    const handleToggleDarkMode = () => toggleDarkMode();
+    const handleShowShortcuts = () => setIsShortcutsModalOpen(true);
+
+    window.addEventListener('relivio:openSearch', handleOpenSearch);
+    window.addEventListener('relivio:toggleDarkMode', handleToggleDarkMode);
+    window.addEventListener('relivio:showShortcuts', handleShowShortcuts);
+
+    return () => {
+      window.removeEventListener('relivio:openSearch', handleOpenSearch);
+      window.removeEventListener('relivio:toggleDarkMode', handleToggleDarkMode);
+      window.removeEventListener('relivio:showShortcuts', handleShowShortcuts);
+    };
+  }, [toggleDarkMode]);
+
+  // Configurer les raccourcis clavier
+  useKeyboardShortcuts(defaultShortcuts);
+
   const toggleSection = (section: string) => {
     setExpandedSections(prev => ({
       ...prev,
       [section]: !prev[section]
     }));
+  };
+
+  // Fonction de navigation depuis la recherche globale
+  const handleSearchNavigate = (view: string, id?: string) => {
+    setCurrentView(view as View);
+    // TODO: Gérer la navigation vers un élément spécifique si id est fourni
   };
 
   const navItems = [
@@ -730,6 +767,45 @@ function AppContent() {
               <i className="fas fa-user-circle"></i>
               {sidebarOpen && currentUser?.name}
             </button>
+            {/* Bouton Export PDF */}
+            <button
+              onClick={() => exportToPDF(`Relivio-${currentView}`)}
+              title="Exporter en PDF"
+              style={{
+                padding: '8px',
+                borderRadius: '8px',
+                border: '1px solid #d1d5db',
+                background: 'white',
+                color: '#374151',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}
+            >
+              <i className="fas fa-file-pdf"></i>
+              {sidebarOpen && <span style={{ fontSize: '14px' }}>PDF</span>}
+            </button>
+
+            {/* Bouton Mode Sombre */}
+            <button
+              onClick={toggleDarkMode}
+              title={isDarkMode ? 'Mode clair' : 'Mode sombre'}
+              style={{
+                padding: '8px',
+                borderRadius: '8px',
+                border: '1px solid #d1d5db',
+                background: 'white',
+                color: isDarkMode ? '#f59e0b' : '#374151',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center'
+              }}
+            >
+              <i className={`fas ${isDarkMode ? 'fa-sun' : 'fa-moon'}`}></i>
+            </button>
+
+            {/* Bouton Déconnexion */}
             <button
               onClick={() => { setIsLoggedIn(false); setCurrentUser(null); }}
               style={{
@@ -756,6 +832,19 @@ function AppContent() {
           {renderContent()}
         </div>
       </main>
+
+      {/* Modale de recherche globale */}
+      <GlobalSearch
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        onNavigate={handleSearchNavigate}
+      />
+
+      {/* Modale des raccourcis */}
+      <ShortcutsModal
+        isOpen={isShortcutsModalOpen}
+        onClose={() => setIsShortcutsModalOpen(false)}
+      />
     </div>
   );
 }

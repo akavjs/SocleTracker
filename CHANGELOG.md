@@ -5,6 +5,38 @@ Tous les changements notables de Relivio seront documentés dans ce fichier.
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 et ce projet adhère à [Semantic Versioning](https://semver.org/lang/fr/).
 
+## [2.2.0] - 2026-01-15
+
+### Ajouté
+- ⌨️ **Raccourcis clavier** : Navigation rapide au clavier (Ctrl+K, Ctrl+D, Ctrl+F, Shift+?)
+- 🔍 **Recherche globale** : Recherche instantanée dans toutes les releases et applications
+- 🌙 **Mode sombre** : Thème sombre avec persistance localStorage
+- ⭐ **Favoris** : Système d'épinglage avec composant FavoriteButton réutilisable
+- 📄 **Export PDF** : Export de toutes les vues via window.print() avec styles optimisés
+- 📋 **Modale de raccourcis** : Affichage de tous les raccourcis disponibles (Shift+?)
+- 🎯 **Hook useKeyboardShortcuts** : Hook personnalisable pour ajouter vos propres raccourcis
+- 🎨 **Hook useDarkMode** : Hook pour gérer le mode sombre avec persistance
+- 📦 **Hook useFavorites** : Hook complet pour gérer les favoris avec localStorage
+- 🖨️ **Hook useExportPDF** : Hook pour l'export PDF avec styles d'impression
+
+### Amélioré
+- 🚀 **Performance** : Ajout de seulement 13 KB au bundle total
+- 💾 **Persistance** : localStorage pour toutes les préférences utilisateur
+- ⚡ **UX** : Navigation plus rapide avec les raccourcis et la recherche
+- 🎨 **Personnalisation** : Mode sombre et favoris pour une expérience sur mesure
+
+### Technique
+- 📁 **Nouvelle structure** : Dossier `src/hooks/` pour les hooks personnalisés
+- 🔧 **Modularité** : Composants et hooks réutilisables
+- 🧪 **Testabilité** : Hooks séparés pour faciliter les tests unitaires
+- 📚 **Documentation** : FEATURES.md complet avec exemples et guide d'utilisation
+
+### Performance
+- Bundle JS : 358.80 KB (+10 KB)
+- Bundle CSS : 25.77 KB (+0.07 KB)
+- Total gzip : 83.57 KB (+2.66 KB)
+- Impact : Négligeable (< 3% d'augmentation)
+
 ## [2.1.0] - 2026-01-15
 
 ### Amélioré
