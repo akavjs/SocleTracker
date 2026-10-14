@@ -7,8 +7,10 @@ WORKDIR /app
 # Copier les fichiers de dépendances
 COPY package*.json ./
 
-# Installer les dépendances
-RUN npm ci
+# Nettoyer le cache npm et installer les dépendances
+RUN npm cache clean --force && \
+    rm -rf node_modules package-lock.json && \
+    npm install
 
 # Copier le reste des fichiers source
 COPY . .
