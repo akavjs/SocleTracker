@@ -1,18 +1,45 @@
-# 🚀 SocleTracker
+# Relivio
 
-**Application de suivi de migration d'applications Kubernetes**
+**Release & Debt Manager**
 
-SocleTracker est une solution complète pour piloter la migration d'applications d'un socle Kubernetes vers un autre (ex: Kubernetes 1.24 → OpenShift 4.14). Elle offre un monitoring en temps réel, une gestion des charts Helm, et un assistant IA intelligent.
+> *Un nom moderne, fluide et facile à prononcer. Il évoque les releases, leur cycle de vie et l'amélioration continue.*
 
-![Version](https://img.shields.io/badge/version-2.0.0-blue)
+![Logo](https://img.shields.io/badge/logo-∞_infinity-6366f1)
+![Version](https://img.shields.io/badge/version-2.2.0-blue)
 ![React](https://img.shields.io/badge/React-18.2-61dafb)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178c6)
+![Responsive](https://img.shields.io/badge/responsive-100%25-green)
 ![License](https://img.shields.io/badge/license-MIT-green)
+![Bundle Size](https://img.shields.io/badge/bundle-358KB-orange)
+
+## 🎯 Présentation
+
+Relivio est une plateforme DevOps complète qui unifie deux aspects cruciaux de la gestion applicative :
+
+- **🚀 Release Management** : Pilotage complet du cycle de vie des releases, des déploiements et des équipes
+- **📦 Dette Technique** : Suivi et gestion des migrations d'applications (ex: Kubernetes 1.24 → OCP 4.14)
+
+### 🎨 Identité visuelle
+
+- **Logo** : Symbole ∞ (infini) représentant le cycle de vie continu des releases
+- **Couleurs** : Gradient violet moderne (#6366f1 → #8b5cf6)
+- **Style** : Interface épurée, professionnelle et responsive
+
+### ✨ Fonctionnalités clés
+
+- ⌨️ **Raccourcis clavier** : Navigation ultra-rapide (Ctrl+K, Ctrl+D, etc.)
+- 🔍 **Recherche globale** : Trouvez instantanément n'importe quelle release ou application
+- 🌙 **Mode sombre** : Confort visuel avec persistance automatique
+- ⭐ **Favoris** : Épinglez vos éléments importants pour un accès rapide
+- 📄 **Export PDF** : Générez des rapports professionnels en un clic
+- 📱 **100% Responsive** : S'adapte à tous les écrans
 
 ## 📋 Table des matières
 
+- [Présentation](#-présentation)
 - [Fonctionnalités](#-fonctionnalités)
 - [Architecture](#-architecture)
+- [Interface utilisateur](#-interface-utilisateur)
 - [Prérequis](#-prérequis)
 - [Installation](#-installation)
 - [Utilisation](#-utilisation)
@@ -23,92 +50,141 @@ SocleTracker est une solution complète pour piloter la migration d'applications
 - [FAQ](#-faq)
 - [Contribution](#-contribution)
 - [Licence](#-licence)
+- [Documentation technique](#-documentation-technique)
 
 ---
 
 ## ✨ Fonctionnalités
 
-### 📊 Tableau de bord
+### 🚀 RELEASE MANAGEMENT
+
+#### 📊 Dashboard Release
+- Vue d'ensemble en temps réel de toutes les releases
+- KPIs : nombre de releases, taux de succès, temps moyen de déploiement
+- Releases en cours avec statut et progression
+- Équipe on-call 24/7
+- Prochains déploiements planifiés
+- Santé des services en temps réel
+
+#### 📦 Gestion des Releases
+- Liste complète des releases avec filtres (statut, priorité)
+- Vue détaillée de chaque release :
+  - Pipeline de déploiement (DEV → STAGING → PREPROD → PROD)
+  - Features, fixes, breaking changes
+  - Workflow d'approbation (Tech Lead, QA Lead, Ops Lead)
+  - Équipes impliquées
+  - Tickets Jira liés
+  - Changelog complet
+- Gestion des hotfixes et rollbacks
+
+#### 🔍 Registry des Versions
+- Tableau des versions installées par environnement
+- Santé de chaque service (healthy, degraded, down)
+- Dépendances entre services
+- Dernières dates de déploiement
+- Comparaison des versions entre environnements
+
+#### 📅 Planning des Releases
+- Calendrier mensuel des déploiements
+- Types d'événements : release, hotfix, maintenance, rollback
+- Modal de détails avec équipes et durée
+- Liste des événements à venir
+- Gestion des fenêtres de maintenance
+
+#### 👥 Gestion des Équipes
+- Équipe on-call 24/7 avec contact direct
+- Organisation par équipes (Platform, Identity, Payments, etc.)
+- Rôles : Release Manager, Tech Lead, QA Lead, Ops Lead, Developer, QA, Ops
+- Statut on-call en temps réel
+
+### 📦 GESTION DE LA DETTE TECHNIQUE (Migration)
+
+#### 📊 Tableau de bord Migration
 - Vue d'ensemble de la migration avec statistiques en temps réel
 - Progression globale et par application
 - Alertes sur les applications critiques et problèmes de charts Helm
 - Historique des événements récents
 
-### 📦 Gestion des applications
+#### 📦 Gestion des Applications
 - Liste détaillée des applications à migrer
 - Suivi de la progression par application
 - Gestion des environnements (DEV, STAGING, PREPROD, PROD)
 - Monitoring des pods et replicas en temps réel
 
-### 🔍 Monitoring des environnements
+#### 🔍 Monitoring des Environnements
 - État en temps réel des déploiements
 - Statut des pods (running, failed, crashloop)
 - Détection automatique des incidents
 - Filtrage par environnement
 
-### 📈 Suivi de la progression
+#### 📈 Suivi de la Progression
 - Pipeline de migration en 6 phases
 - Barres de progression par application
 - Calendrier prévisionnel
 - Statistiques globales
 
-### 🤖 Assistant IA
-- Chatbot intelligent pour analyser l'état de la migration
-- Réponses contextuelles sur les applications, environnements, charts Helm
-- Recommandations automatiques
-- Configuration personnalisable (OpenAI, Anthropic, Ollama, Custom)
-
-### 🔗 Intégration Git
-- Connexion à GitLab et GitHub
-- Vérification automatique des charts Helm
-- Détection des ressources manquantes ou obsolètes
-- Synchronisation en temps réel
-
-### 👥 Système multi-utilisateurs
-- Profils utilisateurs avec espace personnel
-- Gestion des applications personnelles
-- Configurations Git et IA isolées par utilisateur
-- Rôles : Administrateur et Utilisateur
-
-### 📥 Import/Export
-- Export en JSON ou CSV
-- Import depuis fichiers JSON ou CSV
-- Validation automatique des données
-- Mapping intelligent des colonnes CSV
-
-### 🔔 Notifications
-- Configuration de webhooks (Slack, Teams, Email)
-- Alertes sur événements (app bloquée, migration terminée, etc.)
-- Activation/désactivation par webhook
-- Test de connexion
-
-### 📊 Rapports
-- Génération de rapports PDF, Excel, CSV
-- Aperçu avec statistiques détaillées
-- Sélection de période personnalisable
-- Export automatique
-
-### 📅 Calendrier de migration
-- Vue mensuelle avec événements
-- Timeline des migrations
-- Gestion des dépendances entre applications
-- Code couleur par statut
-
-### 🧠 Prédictions IA
+#### 🧠 Prédictions IA
 - Estimation de la durée restante par application
 - Analyse des facteurs de risque
 - Score de confiance
 - Recommandations basées sur l'historique
 
-### 🔗 Intégration Jira
+#### 📊 Rapports
+- Génération de rapports PDF, Excel, CSV
+- Aperçu avec statistiques détaillées
+- Sélection de période personnalisable
+- Export automatique
+
+### 🔧 OUTILS COMMUNS
+
+#### 🤖 Assistant IA
+- Chatbot intelligent pour analyser l'état de la migration
+- Réponses contextuelles sur les applications, environnements, charts Helm
+- Recommandations automatiques
+- Configuration personnalisable (OpenAI, Anthropic, Ollama, Custom)
+
+#### 🔗 Intégration Git
+- Connexion à GitLab et GitHub
+- Vérification automatique des charts Helm
+- Détection des ressources manquantes ou obsolètes
+- Synchronisation en temps réel
+
+#### 🔔 Notifications
+- Configuration de webhooks (Slack, Teams, Email)
+- Alertes sur événements (app bloquée, migration terminée, etc.)
+- Activation/désactivation par webhook
+- Test de connexion
+
+#### 🔗 Intégration Jira
 - Configuration de la connexion Jira
 - Synchronisation des tickets
 - Affichage des tickets liés aux applications
 - Création de nouveaux tickets
 
+#### 📥 Import/Export
+- Export en JSON ou CSV
+- Import depuis fichiers JSON ou CSV
+- Validation automatique des données
+- Mapping intelligent des colonnes CSV
+
+### 👤 ESPACE PERSONNEL
+
+#### 👥 Système multi-utilisateurs
+- Profils utilisateurs avec espace personnel
+- Gestion des applications personnelles
+- Configurations Git et IA isolées par utilisateur
+- Rôles : Administrateur et Utilisateur
+
 ---
 
 ## 🆕 Nouveautés v2.0
+
+### 🚀 Release Management (Nouveau module)
+- **Dashboard Release** : centre de commande avec KPIs en temps réel
+- **Gestion des Releases** : workflow complet avec pipeline de déploiement
+- **Registry des Versions** : versions installées par environnement
+- **Planning des Releases** : calendrier avec gestion des dépendances
+- **Gestion des Équipes** : on-call 24/7 et responsabilités
 
 ### 📊 Analytics & Reporting
 - **Rapports PDF/Excel** générés automatiquement
@@ -135,7 +211,7 @@ SocleTracker est une solution complète pour piloter la migration d'applications
 - **Détection de patterns** : identifier les applications similaires
 
 ### 🔌 Intégrations DevOps
-- **Jira** : synchronisation des tickets de migration
+- **Jira** : synchronisation des tickets
 - **GitLab/GitHub** : vérification des charts Helm
 - **Prometheus/Grafana** : métriques en temps réel
 - **Slack/Teams** : notifications d'équipe
@@ -144,50 +220,169 @@ SocleTracker est une solution complète pour piloter la migration d'applications
 
 ## 🏗️ Architecture
 
+### Structure du projet
+
 ```
-socletracker/
+relivio/
 ├── src/
-│   ├── components/           # Composants React
-│   │   ├── Dashboard.tsx
-│   │   ├── ApplicationList.tsx
-│   │   ├── ApplicationDetail.tsx
-│   │   ├── EnvironmentMonitor.tsx
-│   │   ├── MigrationProgress.tsx
-│   │   ├── LLMChat.tsx
-│   │   ├── ImportExport.tsx
-│   │   ├── AdminDashboard.tsx
-│   │   ├── MyApplications.tsx
-│   │   ├── MyGitConfig.tsx
-│   │   ├── MyLLMConfig.tsx
-│   │   ├── UserProfile.tsx
-│   │   ├── Notifications.tsx
-│   │   ├── Reports.tsx
-│   │   ├── MigrationCalendar.tsx
-│   │   ├── AIPredictions.tsx
-│   │   └── JiraIntegration.tsx
+│   ├── components/                    # Composants React
+│   │   ├── 🚀 RELEASE MANAGEMENT
+│   │   │   ├── ReleaseDashboard.tsx      # Dashboard releases (KPIs, santé services)
+│   │   │   ├── ReleasesList.tsx          # Liste des releases avec filtres
+│   │   │   ├── ServicesRegistry.tsx      # Registry des versions par env
+│   │   │   ├── ReleaseCalendarView.tsx   # Planning des déploiements
+│   │   │   └── TeamsManagement.tsx       # Gestion des équipes et on-call
+│   │   │
+│   │   ├── 📦 DETTE TECHNIQUE
+│   │   │   ├── Dashboard.tsx             # Dashboard migration
+│   │   │   ├── ApplicationList.tsx       # Liste des applications
+│   │   │   ├── ApplicationDetail.tsx     # Détail d'une application
+│   │   │   ├── EnvironmentMonitor.tsx    # Monitoring temps réel
+│   │   │   ├── MigrationProgress.tsx     # Suivi de la progression
+│   │   │   ├── MigrationCalendar.tsx     # Calendrier de migration
+│   │   │   ├── AIPredictions.tsx         # Prédictions IA
+│   │   │   └── Reports.tsx               # Rapports et analyses
+│   │   │
+│   │   ├── 🔧 OUTILS COMMUNS
+│   │   │   ├── LLMChat.tsx               # Assistant IA (chatbot)
+│   │   │   ├── Notifications.tsx         # Configuration des alertes
+│   │   │   ├── JiraIntegration.tsx       # Intégration Jira
+│   │   │   └── ImportExport.tsx          # Import/Export JSON/CSV
+│   │   │
+│   │   └── 👤 ESPACE PERSONNEL
+│   │       ├── UserProfile.tsx           # Profil utilisateur
+│   │       ├── MyApplications.tsx        # Mes applications perso
+│   │       ├── MyGitConfig.tsx           # Mes connexions Git
+│   │       ├── MyLLMConfig.tsx           # Configuration IA perso
+│   │       └── AdminDashboard.tsx        # Administration (admin)
+│   │
 │   ├── context/
-│   │   └── UserContext.tsx    # Gestion de l'état utilisateur
+│   │   └── UserContext.tsx              # État global utilisateur
 │   ├── data/
-│   │   └── applications.ts  # Données et types
-│   ├── App.tsx               # Composant principal
-│   ├── main.tsx              # Point d'entrée
-│   └── index.css             # Styles globaux
-├── public/                   # Assets statiques
-├── dist/                     # Build de production
-├── index.html
-├── package.json
-├── tsconfig.json
-├── vite.config.js
-└── README.md
+│   │   ├── applications.ts             # Données migration (apps, services)
+│   │   └── releases.ts                 # Données releases (releases, équipes)
+│   ├── App.tsx                         # Composant principal + routing
+│   ├── main.tsx                        # Point d'entrée React
+│   └── index.css                       # Styles globaux (Tailwind)
+│
+├── public/                              # Assets statiques
+├── dist/                                # Build de production
+├── Dockerfile                           # Configuration Docker multi-stage
+├── docker-compose.yml                   # Docker Compose (dev)
+├── docker-compose.prod.yml              # Docker Compose (prod)
+├── nginx.conf                           # Configuration Nginx
+├── .dockerignore                        # Fichiers exclus du build Docker
+├── .env.example                         # Template variables d'environnement
+├── index.html                           # Point d'entrée HTML
+├── package.json                         # Dépendances et scripts
+├── tsconfig.json                        # Configuration TypeScript
+├── vite.config.js                       # Configuration Vite
+├── README.md                            # Documentation principale
+├── CHANGELOG.md                         # Historique des versions
+├── CONTRIBUTING.md                      # Guide de contribution
+└── LICENSE                              # Licence MIT
 ```
 
+### Architecture technique
+
+#### Frontend
+- **React 18.2** : Framework UI avec hooks et contexte
+- **TypeScript 5.0** : Typage statique pour la robustesse
+- **Vite 6.4** : Build tool ultra-rapide
+- **Styles inline** : Pas de dépendance CSS externe (responsive natif)
+- **Font Awesome 6** : Icônes professionnelles
+
+#### Navigation
+- **Sidebar adaptative** : 
+  - Mode ouvert (256px) : Menu complet avec sections repliables
+  - Mode fermé (80px) : Icônes principales uniquement
+- **Sections repliables** : 5 grandes catégories (Release, Dette, Outils, Personnel, Admin)
+- **État persistant** : Mémorisation des sections ouvertes/fermées
+- **Responsive** : Grilles adaptatives avec `repeat(auto-fit, minmax(...))`
+
+#### Gestion d'état
+- **UserContext** : État global utilisateur (profil, préférences, configs)
+- **État local** : `useState` pour les interactions composant
+- **Données mockées** : Fichiers `data/*.ts` pour démonstration
+
+#### Responsive Design
+- **Polices fluides** : `clamp(20px, 3vw, 24px)` pour adaptation automatique
+- **Grilles adaptatives** : `repeat(auto-fit, minmax(min(400px, 100%), 1fr))`
+- **Largeurs fluides** : `width: '100%'` au lieu de `maxWidth` fixes
+- **Sidebar stable** : `minWidth` et `zIndex` pour éviter les débordements
+
 ### Technologies utilisées
-- **React 18.2** - Framework UI
+- **React 18.2** - Framework UI avec hooks
 - **TypeScript 5.0** - Typage statique
-- **Vite 6.4** - Build tool
-- **Tailwind CSS 4.1** - Styling
-- **Lucide React** - Icônes
-- **Framer Motion** - Animations
+- **Vite 6.4** - Build tool ultra-rapide
+- **Font Awesome 6** - Icônes professionnelles
+- **Styles inline** - Responsive natif sans dépendance CSS
+
+### 🎨 Interface utilisateur
+
+#### Navigation latérale (Sidebar)
+
+La sidebar offre deux modes de navigation :
+
+**Mode ouvert (256px)**
+```
+┌─────────────────────────┐
+│  ∞ Relivio              │
+│  Release & Debt Manager │
+├─────────────────────────┤
+│ ▼ RELEASE MANAGEMENT    │
+│   🚀 Dashboard          │
+│   📦 Releases           │
+│   🔍 Registry Versions  │
+│   📅 Planning           │
+│   👥 Équipes            │
+├─────────────────────────┤
+│ ▼ DETTE TECHNIQUE       │
+│   📊 Vue d'ensemble     │
+│   📦 Applications       │
+│   ...                   │
+└─────────────────────────┘
+```
+
+**Mode fermé (80px)**
+```
+┌────┐
+│ ∞  │
+├────┤
+│ 🚀 │  ← Release Dashboard
+│ 📊 │  ← Vue d'ensemble
+│ 🤖 │  ← Assistant IA
+│ 👤 │  ← Mon profil
+│ 🛡️ │  ← Administration
+└────┘
+```
+
+**Fonctionnalités**
+- ✅ **Sections repliables** : Cliquez sur les titres pour réduire/agrandir
+- ✅ **Bouton hamburger** (☰) : Bascule entre mode ouvert/fermé
+- ✅ **Tooltips** : En mode fermé, survolez les icônes pour voir les labels
+- ✅ **État persistant** : Les sections ouvertes/fermées sont mémorisées
+- ✅ **Responsive** : S'adapte à toutes les tailles d'écran
+
+#### Design System
+
+**Couleurs**
+- Primaire : `#6366f1` → `#8b5cf6` (gradient violet)
+- Succès : `#10b981` (vert)
+- Warning : `#f59e0b` (orange)
+- Erreur : `#ef4444` (rouge)
+- Info : `#3b82f6` (bleu)
+
+**Typographie**
+- Titres : `clamp(20px, 3vw, 32px)`
+- Sous-titres : `clamp(14px, 2vw, 16px)`
+- Corps : `14px`
+- Labels : `12px`
+
+**Composants**
+- Cards : `border-radius: 12px`, `box-shadow: 0 2px 8px rgba(0,0,0,0.05)`
+- Boutons : `border-radius: 8px`, transitions fluides
+- Badges : `border-radius: 8px`, couleurs contextuelles
 
 ---
 
@@ -216,13 +411,161 @@ socletracker/
 
 ---
 
+## 🔄 CI/CD avec GitHub Actions
+
+Relivio inclut une configuration complète GitHub Actions pour l'intégration et le déploiement continus.
+
+### Workflows disponibles
+
+#### 1. Docker Build and Push
+
+**Fichier** : `.github/workflows/docker-build.yml`
+
+**Triggers** :
+- Push vers `main` ou `develop`
+- Pull requests
+- Dispatch manuel
+
+**Jobs** :
+1. **Test** : Lint, type check, tests, build
+2. **Build** : Build Docker multi-arch, push vers GHCR, scan Trivy, SBOM
+3. **Deploy** : Déploiement Kubernetes (optionnel)
+
+**Fonctionnalités** :
+- ✅ Build multi-arch (amd64, arm64)
+- ✅ Cache Docker pour accélérer les builds
+- ✅ Scan de vulnérabilités avec Trivy
+- ✅ Génération de SBOM (Software Bill of Materials)
+- ✅ Upload des résultats vers l'onglet Security
+
+#### 2. Release
+
+**Fichier** : `.github/workflows/release.yml`
+
+**Triggers** :
+- Push de tags `v*.*.*`
+
+**Jobs** :
+1. **Release** : Création de release GitHub avec archives tar.gz et zip
+2. **Docker** : Build et push d'images Docker versionnées
+
+**Tags générés** :
+- `2.2.0` (version complète)
+- `2.2` (major.minor)
+- `2` (major)
+- `latest`
+
+### Configuration
+
+#### Secrets requis
+
+Voir `.github/SECRETS.md` pour la documentation complète.
+
+**Secrets principaux** :
+- `KUBECONFIG` : Configuration Kubernetes pour déploiement
+- `SLACK_WEBHOOK_URL` : Notifications Slack (optionnel)
+
+#### Variables d'environnement
+
+```yaml
+REGISTRY: ghcr.io
+IMAGE_NAME: ${{ github.repository }}
+```
+
+### Utilisation
+
+#### Build automatique sur push
+
+```bash
+git push origin main  # Build et push automatique vers GHCR
+```
+
+#### Release manuelle
+
+```bash
+# Créer et pousser un tag
+git tag v2.2.0
+git push origin v2.2.0
+
+# Résultat :
+# - Release GitHub créée avec archives
+# - Image Docker versionnée poussée vers GHCR
+# - Tags : 2.2.0, 2.2, 2, latest
+```
+
+#### Déploiement manuel
+
+1. Allez dans l'onglet **Actions** de votre repository
+2. Sélectionnez le workflow **Docker Build and Push**
+3. Cliquez sur **Run workflow**
+4. Choisissez l'environnement (staging/production)
+
+### Images Docker
+
+Les images sont disponibles sur GitHub Container Registry :
+
+```bash
+# Latest (branche main)
+docker pull ghcr.io/votre-org/relivio:latest
+
+# Version spécifique
+docker pull ghcr.io/votre-org/relivio:2.2.0
+
+# Branche develop
+docker pull ghcr.io/votre-org/relivio:develop
+
+# Commit spécifique
+docker pull ghcr.io/votre-org/relivio:main-abc1234
+```
+
+### Sécurité
+
+- ✅ **Scan de vulnérabilités** : Trivy scan automatique
+- ✅ **SBOM** : Software Bill of Materials généré
+- ✅ **Security tab** : Résultats uploadés dans GitHub Security
+- ✅ **Multi-arch** : Support amd64 et arm64
+- ✅ **Cache** : GitHub Actions cache pour performance
+
+### Architecture CI/CD
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    GitHub Actions Pipeline                   │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ┌──────────┐      ┌──────────┐      ┌──────────┐          │
+│  │  Test    │ ───▶ │  Build   │ ───▶ │  Deploy  │          │
+│  │  Job     │      │  Job     │      │  Job     │          │
+│  └──────────┘      └──────────┘      └──────────┘          │
+│       │                 │                 │                  │
+│       ▼                 ▼                 ▼                  │
+│  • Lint            • Docker          • Kubernetes           │
+│  • Type check      • Multi-arch      • Notifications        │
+│  • Tests           • Push GHCR       • Rollback             │
+│  • Build           • Trivy scan                             │
+│                    • SBOM                                   │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Bonnes pratiques
+
+- ✅ Utilisez des branches protégées pour `main`
+- ✅ Exigez des PR reviews avant merge
+- ✅ Activez les checks de status requis
+- ✅ Configurez des environnements pour staging/production
+- ✅ Rotatez régulièrement les secrets
+- ✅ Surveillez les scans de vulnérabilités
+
+---
+
 ## 🚀 Installation
 
 ### 1. Cloner le repository
 
 ```bash
-git clone https://github.com/votre-org/socletracker.git
-cd socletracker
+git clone https://github.com/votre-org/relivio.git
+cd relivio
 ```
 
 ### 2. Installer les dépendances
@@ -282,29 +625,44 @@ Les fichiers seront générés dans le dossier `dist/`
 
 ### Navigation
 
-Le menu latéral est organisé en 3 sections :
+Le menu latéral est organisé en 5 grandes sections **repliables** avec des icônes professionnelles :
 
-#### 📁 Général
-- **Tableau de bord** : Vue d'ensemble
-- **Applications** : Liste globale des applications
-- **Environnements** : Monitoring temps réel
-- **Progression** : Suivi de la migration
-- **Calendrier** : Planification des migrations
-- **Assistant IA** : Chatbot partagé
-- **Prédictions IA** : Estimation de la durée
-- **Import/Export** : Gestion des données
-- **Rapports** : Génération de rapports
+#### Release Management
+- **Dashboard** : Centre de commande des releases
+- **Releases** : Gestion complète des releases
+- **Registry Versions** : Versions installées par environnement
+- **Planning** : Calendrier des déploiements
+- **Équipes** : Gestion des équipes et on-call
+
+#### Dette Technique (Migration)
+- **Vue d'ensemble** : Dashboard migration
+- **Applications** : Applications à migrer
+- **Environnements** : Monitoring des environnements
+- **Progression** : Suivi de l'avancement
+- **Calendrier** : Planning de migration
+- **Prédictions** : Estimations IA
+- **Rapports** : Analyses et exports
+
+#### Outils
+- **Assistant IA** : Chatbot intelligent
 - **Notifications** : Configuration des alertes
-- **Jira** : Intégration avec Jira
+- **Jira** : Intégration tickets
+- **Import/Export** : Gestion des données
 
-#### 👤 Personnel
+#### Personnel
 - **Mon profil** : Informations et préférences
-- **Mes applications** : Vos applications personnelles
 - **Mes connexions Git** : Vos repositories GitLab/GitHub
 - **Mon assistant IA** : Configuration de votre LLM
 
-#### 🔐 Administration (Admin uniquement)
+#### Administration (Admin uniquement)
 - **Administration** : Gestion des utilisateurs
+
+**Fonctionnalités de navigation :**
+- **Sections repliables** : Cliquez sur les titres de section pour les réduire/agrandir
+- **Sidebar rétractable** : Bouton hamburger pour masquer/afficher la barre latérale
+- **État persistant** : Les sections ouvertes/fermées sont mémorisées pendant la session
+- **Navigation fluide** : Transitions animées entre les sections
+- **Icônes professionnelles** : Font Awesome au lieu d'emojis
 
 ### Ajouter une application personnelle
 
@@ -952,7 +1310,18 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de 
 
 ---
 
-## 📚 Documentation supplémentaire
+## 📚 Documentation technique
+
+Pour une compréhension approfondie de l'architecture et des choix techniques :
+
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** : Documentation technique complète
+  - Architecture des composants
+  - Système de navigation (sidebar adaptative)
+  - Responsive design
+  - Gestion d'état
+  - Performance et optimisations
+  - Déploiement Docker
+  - Sécurité
 
 - **[CHANGELOG.md](CHANGELOG.md)** : Historique complet des versions et changements
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** : Guide pour contribuer au projet
@@ -964,7 +1333,7 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de 
 
 Pour toute question ou problème :
 - Ouvrez une issue sur GitHub
-- Contactez l'équipe : support@socletracker.com
+- Contactez l'équipe : support@relivio.dev
 
 ---
 
@@ -972,9 +1341,11 @@ Pour toute question ou problème :
 
 - React Team pour le framework
 - Vite Team pour le build tool
-- Tailwind CSS pour le design system
+- Font Awesome pour les icônes
 - Toute la communauté open source
 
 ---
 
-**Développé avec ❤️ pour faciliter les migrations Kubernetes**
+**Développé avec ❤️ par l'équipe Relivio**
+
+*Release & Debt Manager - Le cycle de vie continu de vos applications*

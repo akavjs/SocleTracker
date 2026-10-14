@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { UserProvider, useUser } from './context/UserContext';
 import Dashboard from './components/Dashboard';
 import MyApplications from './components/MyApplications';
@@ -15,30 +15,100 @@ import Reports from './components/Reports';
 import MigrationCalendar from './components/MigrationCalendar';
 import AIPredictions from './components/AIPredictions';
 import JiraIntegration from './components/JiraIntegration';
+import ReleaseDashboard from './components/ReleaseDashboard';
+import ReleasesList from './components/ReleasesList';
+import ServicesRegistry from './components/ServicesRegistry';
+import ReleaseCalendarView from './components/ReleaseCalendarView';
+import TeamsManagement from './components/TeamsManagement';
+import GlobalSearch from './components/GlobalSearch';
+import ShortcutsModal from './components/ShortcutsModal';
+import { useKeyboardShortcuts, defaultShortcuts } from './hooks/useKeyboardShortcuts';
+import { useDarkMode } from './hooks/useDarkMode';
+import { useExportPDF } from './hooks/useExportPDF';
 
-type View = 'dashboard' | 'my-apps' | 'environments' | 'progress' | 'assistant' | 'import-export' | 'admin' | 'my-git' | 'my-llm' | 'profile' | 'notifications' | 'reports' | 'calendar' | 'predictions' | 'jira';
+type View = 'dashboard' | 'my-apps' | 'environments' | 'progress' | 'assistant' | 'import-export' | 'admin' | 'my-git' | 'my-llm' | 'profile' | 'notifications' | 'reports' | 'calendar' | 'predictions' | 'jira' | 'release-dashboard' | 'releases' | 'services' | 'release-calendar' | 'teams';
 
 function AppContent() {
   const { currentUser, users, setCurrentUser } = useUser();
   const [currentView, setCurrentView] = useState<View>('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
+    release: true,
+    debt: true,
+    tools: false,
+    personal: false,
+    admin: false
+  });
+
+  // Nouveaux états pour les fonctionnalités légères
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isShortcutsModalOpen, setIsShortcutsModalOpen] = useState(false);
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const { exportToPDF } = useExportPDF();
+
+  // Écouter les événements personnalisés des raccourcis
+  useEffect(() => {
+    const handleOpenSearch = () => setIsSearchOpen(true);
+    const handleToggleDarkMode = () => toggleDarkMode();
+    const handleShowShortcuts = () => setIsShortcutsModalOpen(true);
+
+    window.addEventListener('relivio:openSearch', handleOpenSearch);
+    window.addEventListener('relivio:toggleDarkMode', handleToggleDarkMode);
+    window.addEventListener('relivio:showShortcuts', handleShowShortcuts);
+
+    return () => {
+      window.removeEventListener('relivio:openSearch', handleOpenSearch);
+      window.removeEventListener('relivio:toggleDarkMode', handleToggleDarkMode);
+      window.removeEventListener('relivio:showShortcuts', handleShowShortcuts);
+    };
+  }, [toggleDarkMode]);
+
+  // Configurer les raccourcis clavier
+  useKeyboardShortcuts(defaultShortcuts);
+
+  const toggleSection = (section: string) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
+
+  // Fonction de navigation depuis la recherche globale
+  const handleSearchNavigate = (view: string, id?: string) => {
+    setCurrentView(view as View);
+    // TODO: Gérer la navigation vers un élément spécifique si id est fourni
+  };
 
   const navItems = [
-    { id: 'dashboard' as View, label: 'Tableau de bord', icon: 'fa-th-large', section: 'general' },
-    { id: 'my-apps' as View, label: 'Mes applications', icon: 'fa-cubes', section: 'general' },
-    { id: 'environments' as View, label: 'Environnements', icon: 'fa-server', section: 'general' },
-    { id: 'progress' as View, label: 'Progression', icon: 'fa-chart-line', section: 'general' },
-    { id: 'calendar' as View, label: 'Calendrier', icon: 'fa-calendar-alt', section: 'general' },
-    { id: 'assistant' as View, label: 'Assistant IA', icon: 'fa-robot', section: 'general' },
-    { id: 'predictions' as View, label: 'Prédictions IA', icon: 'fa-magic', section: 'general' },
-    { id: 'import-export' as View, label: 'Import/Export', icon: 'fa-file-import', section: 'general' },
-    { id: 'reports' as View, label: 'Rapports', icon: 'fa-file-alt', section: 'general' },
-    { id: 'notifications' as View, label: 'Notifications', icon: 'fa-bell', section: 'general' },
-    { id: 'jira' as View, label: 'Jira', icon: 'fa-tasks', section: 'general' },
+    // 🚀 RELEASE MANAGEMENT
+    { id: 'release-dashboard' as View, label: 'Dashboard', icon: 'fa-rocket', section: 'release', highlight: true },
+    { id: 'releases' as View, label: 'Releases', icon: 'fa-box', section: 'release' },
+    { id: 'services' as View, label: 'Registry Versions', icon: 'fa-server', section: 'release' },
+    { id: 'release-calendar' as View, label: 'Planning', icon: 'fa-calendar-alt', section: 'release' },
+    { id: 'teams' as View, label: 'Équipes', icon: 'fa-users', section: 'release' },
+    
+    // 📦 GESTION DE LA DETTE (Migration)
+    { id: 'dashboard' as View, label: 'Vue d\'ensemble', icon: 'fa-th-large', section: 'debt' },
+    { id: 'my-apps' as View, label: 'Applications', icon: 'fa-cubes', section: 'debt' },
+    { id: 'environments' as View, label: 'Environnements', icon: 'fa-server', section: 'debt' },
+    { id: 'progress' as View, label: 'Progression', icon: 'fa-chart-line', section: 'debt' },
+    { id: 'calendar' as View, label: 'Calendrier', icon: 'fa-calendar', section: 'debt' },
+    { id: 'predictions' as View, label: 'Prédictions', icon: 'fa-magic', section: 'debt' },
+    { id: 'reports' as View, label: 'Rapports', icon: 'fa-file-alt', section: 'debt' },
+    
+    // 🔧 OUTILS COMMUNS
+    { id: 'assistant' as View, label: 'Assistant IA', icon: 'fa-robot', section: 'tools' },
+    { id: 'notifications' as View, label: 'Notifications', icon: 'fa-bell', section: 'tools' },
+    { id: 'jira' as View, label: 'Jira', icon: 'fa-tasks', section: 'tools' },
+    { id: 'import-export' as View, label: 'Import/Export', icon: 'fa-file-import', section: 'tools' },
+    
+    // 👤 PERSONNEL
     { id: 'profile' as View, label: 'Mon profil', icon: 'fa-user-circle', section: 'personal' },
     { id: 'my-git' as View, label: 'Mes connexions Git', icon: 'fa-code-branch', section: 'personal' },
     { id: 'my-llm' as View, label: 'Mon assistant IA', icon: 'fa-brain', section: 'personal' },
+    
+    // 🔐 ADMIN
     { id: 'admin' as View, label: 'Administration', icon: 'fa-user-shield', section: 'admin', adminOnly: true },
   ];
 
@@ -47,8 +117,19 @@ function AppContent() {
     return true;
   });
 
+  const releaseItems = filteredNavItems.filter(i => i.section === 'release');
+  const debtItems = filteredNavItems.filter(i => i.section === 'debt');
+  const toolsItems = filteredNavItems.filter(i => i.section === 'tools');
+  const personalItems = filteredNavItems.filter(i => i.section === 'personal');
+  const adminItems = filteredNavItems.filter(i => i.section === 'admin');
+
   const renderContent = () => {
     switch (currentView) {
+      case 'release-dashboard': return <ReleaseDashboard />;
+      case 'releases': return <ReleasesList />;
+      case 'services': return <ServicesRegistry />;
+      case 'release-calendar': return <ReleaseCalendarView />;
+      case 'teams': return <TeamsManagement />;
       case 'dashboard': return <Dashboard />;
       case 'my-apps': return <MyApplications />;
       case 'environments': return <EnvironmentMonitor />;
@@ -64,7 +145,7 @@ function AppContent() {
       case 'my-git': return <MyGitConfig />;
       case 'my-llm': return <MyLLMConfig />;
       case 'admin': return currentUser?.role === 'admin' ? <AdminDashboard /> : <div>Accès refusé</div>;
-      default: return <Dashboard />;
+      default: return <ReleaseDashboard />;
     }
   };
 
@@ -89,18 +170,22 @@ function AppContent() {
             <div style={{
               width: '64px',
               height: '64px',
-              background: 'linear-gradient(135deg, #4f46e5, #7c3aed)',
+              background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
               borderRadius: '16px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              margin: '0 auto 16px'
+              margin: '0 auto 16px',
+              boxShadow: '0 8px 16px rgba(99, 102, 241, 0.3)'
             }}>
-              <i className="fas fa-exchange-alt" style={{ color: 'white', fontSize: '28px' }}></i>
+              <i className="fas fa-infinity" style={{ color: 'white', fontSize: '32px' }}></i>
             </div>
-            <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: '#111827', marginBottom: '8px' }}>
-              SocleTracker
+            <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#111827', marginBottom: '4px' }}>
+              Relivio
             </h1>
+            <p style={{ fontSize: '13px', color: '#6b7280', fontStyle: 'italic', marginBottom: '8px' }}>
+              Release & Debt Manager
+            </p>
             <p style={{ color: '#6b7280', fontSize: '14px' }}>
               Choisissez votre profil pour continuer
             </p>
@@ -174,121 +259,149 @@ function AppContent() {
     );
   }
 
-  const generalItems = filteredNavItems.filter(i => i.section === 'general');
-  const personalItems = filteredNavItems.filter(i => i.section === 'personal');
-  const adminItems = filteredNavItems.filter(i => i.section === 'admin');
-
   return (
-    <div style={{ display: 'flex', height: '100vh', background: '#f9fafb', overflow: 'hidden' }}>
+    <div style={{ display: 'flex', height: '100vh', background: '#f9fafb', overflow: 'hidden', width: '100%' }}>
       {/* Sidebar */}
       <aside style={{ 
         width: sidebarOpen ? '256px' : '80px', 
+        minWidth: sidebarOpen ? '256px' : '80px',
         background: 'white', 
         borderRight: '1px solid #e5e7eb', 
         display: 'flex', 
         flexDirection: 'column',
         transition: 'width 0.3s',
-        flexShrink: 0
+        flexShrink: 0,
+        zIndex: 10,
+        position: 'relative'
       }}>
         <div style={{ padding: '16px', borderBottom: '1px solid #f3f4f6' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{ 
               width: '40px', 
               height: '40px', 
-              background: 'linear-gradient(135deg, #4f46e5, #7c3aed)', 
+              background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', 
               borderRadius: '12px', 
               display: 'flex', 
               alignItems: 'center', 
               justifyContent: 'center',
-              flexShrink: 0
+              flexShrink: 0,
+              boxShadow: '0 4px 6px rgba(99, 102, 241, 0.3)'
             }}>
-              <i className="fas fa-exchange-alt" style={{ color: 'white', fontSize: '14px' }}></i>
+              <i className="fas fa-infinity" style={{ color: 'white', fontSize: '16px' }}></i>
             </div>
             {sidebarOpen && (
               <div>
-                <h1 style={{ fontWeight: 'bold', color: '#111827', fontSize: '14px' }}>SocleTracker</h1>
-                <p style={{ fontSize: '12px', color: '#6b7280' }}>Migration Monitor</p>
+                <h1 style={{ fontWeight: 'bold', color: '#111827', fontSize: '14px' }}>Relivio</h1>
+                <p style={{ fontSize: '12px', color: '#6b7280' }}>Release & Debt Manager</p>
               </div>
             )}
           </div>
         </div>
 
         <nav style={{ flex: 1, padding: '12px', display: 'flex', flexDirection: 'column', gap: '4px', overflowY: 'auto' }}>
-          {/* General Section */}
-          {sidebarOpen && (
-            <p style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', padding: '8px 12px 4px', letterSpacing: '0.05em' }}>
-              Général
-            </p>
-          )}
-          {generalItems.map(item => (
-            <button
-              key={item.id}
-              onClick={() => setCurrentView(item.id)}
-              style={{
-                width: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                padding: '10px 12px',
-                borderRadius: '8px',
-                fontSize: '14px',
-                fontWeight: 500,
-                border: 'none',
-                cursor: 'pointer',
-                background: currentView === item.id ? '#eef2ff' : 'transparent',
-                color: currentView === item.id ? '#4f46e5' : '#4b5563',
-                transition: 'all 0.2s',
-                textAlign: 'left'
-              }}
-            >
-              <i className={`fas ${item.icon}`} style={{ width: '20px', textAlign: 'center' }}></i>
-              {sidebarOpen && <span>{item.label}</span>}
-            </button>
-          ))}
-
-          {/* Personal Section */}
-          {sidebarOpen && (
-            <p style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', padding: '16px 12px 4px', letterSpacing: '0.05em' }}>
-              Personnel
-            </p>
-          )}
-          {!sidebarOpen && <div style={{ height: '16px' }}></div>}
-          {personalItems.map(item => (
-            <button
-              key={item.id}
-              onClick={() => setCurrentView(item.id)}
-              style={{
-                width: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                padding: '10px 12px',
-                borderRadius: '8px',
-                fontSize: '14px',
-                fontWeight: 500,
-                border: 'none',
-                cursor: 'pointer',
-                background: currentView === item.id ? '#eef2ff' : 'transparent',
-                color: currentView === item.id ? '#4f46e5' : '#4b5563',
-                transition: 'all 0.2s',
-                textAlign: 'left'
-              }}
-            >
-              <i className={`fas ${item.icon}`} style={{ width: '20px', textAlign: 'center' }}></i>
-              {sidebarOpen && <span>{item.label}</span>}
-            </button>
-          ))}
-
-          {/* Admin Section */}
-          {adminItems.length > 0 && (
+          {/* Release Section */}
+          {sidebarOpen ? (
             <>
-              {sidebarOpen && (
-                <p style={{ fontSize: '11px', fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', padding: '16px 12px 4px', letterSpacing: '0.05em' }}>
-                  Administration
-                </p>
-              )}
-              {!sidebarOpen && <div style={{ height: '16px' }}></div>}
-              {adminItems.map(item => (
+              <button
+                onClick={() => toggleSection('release')}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  color: '#9ca3af',
+                  textTransform: 'uppercase',
+                  padding: '8px 12px 4px',
+                  letterSpacing: '0.05em',
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  textAlign: 'left'
+                }}
+              >
+                <span><i className="fas fa-rocket" style={{ marginRight: '6px' }}></i>Release Management</span>
+                <i className={`fas fa-chevron-${expandedSections.release ? 'down' : 'right'}`} style={{ fontSize: '10px' }}></i>
+              </button>
+              {expandedSections.release && releaseItems.map(item => (
+                <button
+                  key={item.id}
+                  onClick={() => setCurrentView(item.id)}
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    padding: '10px 12px',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    fontWeight: item.highlight ? 600 : 500,
+                    border: 'none',
+                    cursor: 'pointer',
+                    background: currentView === item.id ? '#eef2ff' : item.highlight ? '#f0f9ff' : 'transparent',
+                    color: currentView === item.id ? '#4f46e5' : item.highlight ? '#0284c7' : '#4b5563',
+                    transition: 'all 0.2s',
+                    textAlign: 'left'
+                  }}
+                >
+                  <i className={`fas ${item.icon}`} style={{ width: '20px', textAlign: 'center' }}></i>
+                  <span>{item.label}</span>
+                </button>
+              ))}
+            </>
+          ) : (
+            // Mode sidebar fermée : afficher uniquement les icônes principales
+            releaseItems.filter(item => item.highlight || item.id === 'release-dashboard').map(item => (
+              <button
+                key={item.id}
+                onClick={() => setCurrentView(item.id)}
+                title={item.label}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '12px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  background: currentView === item.id ? '#eef2ff' : 'transparent',
+                  color: currentView === item.id ? '#4f46e5' : '#4b5563',
+                  transition: 'all 0.2s'
+                }}
+              >
+                <i className={`fas ${item.icon}`} style={{ fontSize: '18px' }}></i>
+              </button>
+            ))
+          )}
+
+          {/* Gestion de la dette Section */}
+          {sidebarOpen ? (
+            <>
+              <button
+                onClick={() => toggleSection('debt')}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  color: '#9ca3af',
+                  textTransform: 'uppercase',
+                  padding: '16px 12px 4px',
+                  letterSpacing: '0.05em',
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  textAlign: 'left'
+                }}
+              >
+                <span><i className="fas fa-layer-group" style={{ marginRight: '6px' }}></i>Dette Technique</span>
+                <i className={`fas fa-chevron-${expandedSections.debt ? 'down' : 'right'}`} style={{ fontSize: '10px' }}></i>
+              </button>
+              {expandedSections.debt && debtItems.map(item => (
                 <button
                   key={item.id}
                   onClick={() => setCurrentView(item.id)}
@@ -310,10 +423,256 @@ function AppContent() {
                   }}
                 >
                   <i className={`fas ${item.icon}`} style={{ width: '20px', textAlign: 'center' }}></i>
-                  {sidebarOpen && <span>{item.label}</span>}
+                  <span>{item.label}</span>
                 </button>
               ))}
             </>
+          ) : (
+            // Mode sidebar fermée : icône principale
+            <button
+              onClick={() => setCurrentView('dashboard')}
+              title="Vue d'ensemble"
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '12px',
+                borderRadius: '8px',
+                border: 'none',
+                cursor: 'pointer',
+                background: currentView === 'dashboard' ? '#eef2ff' : 'transparent',
+                color: currentView === 'dashboard' ? '#4f46e5' : '#4b5563',
+                transition: 'all 0.2s',
+                marginTop: '16px'
+              }}
+            >
+              <i className="fas fa-th-large" style={{ fontSize: '18px' }}></i>
+            </button>
+          )}
+
+          {/* Outils communs Section */}
+          {sidebarOpen ? (
+            <>
+              <button
+                onClick={() => toggleSection('tools')}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  color: '#9ca3af',
+                  textTransform: 'uppercase',
+                  padding: '16px 12px 4px',
+                  letterSpacing: '0.05em',
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  textAlign: 'left'
+                }}
+              >
+                <span><i className="fas fa-tools" style={{ marginRight: '6px' }}></i>Outils</span>
+                <i className={`fas fa-chevron-${expandedSections.tools ? 'down' : 'right'}`} style={{ fontSize: '10px' }}></i>
+              </button>
+              {expandedSections.tools && toolsItems.map(item => (
+                <button
+                  key={item.id}
+                  onClick={() => setCurrentView(item.id)}
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    padding: '10px 12px',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    border: 'none',
+                    cursor: 'pointer',
+                    background: currentView === item.id ? '#eef2ff' : 'transparent',
+                    color: currentView === item.id ? '#4f46e5' : '#4b5563',
+                    transition: 'all 0.2s',
+                    textAlign: 'left'
+                  }}
+                >
+                  <i className={`fas ${item.icon}`} style={{ width: '20px', textAlign: 'center' }}></i>
+                  <span>{item.label}</span>
+                </button>
+              ))}
+            </>
+          ) : (
+            <button
+              onClick={() => setCurrentView('assistant')}
+              title="Assistant IA"
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '12px',
+                borderRadius: '8px',
+                border: 'none',
+                cursor: 'pointer',
+                background: currentView === 'assistant' ? '#eef2ff' : 'transparent',
+                color: currentView === 'assistant' ? '#4f46e5' : '#4b5563',
+                transition: 'all 0.2s',
+                marginTop: '16px'
+              }}
+            >
+              <i className="fas fa-robot" style={{ fontSize: '18px' }}></i>
+            </button>
+          )}
+
+          {/* Personal Section */}
+          {sidebarOpen ? (
+            <>
+              <button
+                onClick={() => toggleSection('personal')}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  color: '#9ca3af',
+                  textTransform: 'uppercase',
+                  padding: '16px 12px 4px',
+                  letterSpacing: '0.05em',
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  textAlign: 'left'
+                }}
+              >
+                <span><i className="fas fa-user-circle" style={{ marginRight: '6px' }}></i>Personnel</span>
+                <i className={`fas fa-chevron-${expandedSections.personal ? 'down' : 'right'}`} style={{ fontSize: '10px' }}></i>
+              </button>
+              {expandedSections.personal && personalItems.map(item => (
+                <button
+                  key={item.id}
+                  onClick={() => setCurrentView(item.id)}
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    padding: '10px 12px',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    border: 'none',
+                    cursor: 'pointer',
+                    background: currentView === item.id ? '#eef2ff' : 'transparent',
+                    color: currentView === item.id ? '#4f46e5' : '#4b5563',
+                    transition: 'all 0.2s',
+                    textAlign: 'left'
+                  }}
+                >
+                  <i className={`fas ${item.icon}`} style={{ width: '20px', textAlign: 'center' }}></i>
+                  <span>{item.label}</span>
+                </button>
+              ))}
+            </>
+          ) : (
+            <button
+              onClick={() => setCurrentView('profile')}
+              title="Mon profil"
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '12px',
+                borderRadius: '8px',
+                border: 'none',
+                cursor: 'pointer',
+                background: currentView === 'profile' ? '#eef2ff' : 'transparent',
+                color: currentView === 'profile' ? '#4f46e5' : '#4b5563',
+                transition: 'all 0.2s',
+                marginTop: '16px'
+              }}
+            >
+              <i className="fas fa-user-circle" style={{ fontSize: '18px' }}></i>
+            </button>
+          )}
+
+          {/* Admin Section */}
+          {adminItems.length > 0 && (
+            sidebarOpen ? (
+              <>
+                <button
+                  onClick={() => toggleSection('admin')}
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    color: '#9ca3af',
+                    textTransform: 'uppercase',
+                    padding: '16px 12px 4px',
+                    letterSpacing: '0.05em',
+                    background: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    textAlign: 'left'
+                  }}
+                >
+                  <span><i className="fas fa-shield-alt" style={{ marginRight: '6px' }}></i>Administration</span>
+                  <i className={`fas fa-chevron-${expandedSections.admin ? 'down' : 'right'}`} style={{ fontSize: '10px' }}></i>
+                </button>
+                {expandedSections.admin && adminItems.map(item => (
+                  <button
+                    key={item.id}
+                    onClick={() => setCurrentView(item.id)}
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      padding: '10px 12px',
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                      fontWeight: 500,
+                      border: 'none',
+                      cursor: 'pointer',
+                      background: currentView === item.id ? '#eef2ff' : 'transparent',
+                      color: currentView === item.id ? '#4f46e5' : '#4b5563',
+                      transition: 'all 0.2s',
+                      textAlign: 'left'
+                    }}
+                  >
+                    <i className={`fas ${item.icon}`} style={{ width: '20px', textAlign: 'center' }}></i>
+                    <span>{item.label}</span>
+                  </button>
+                ))}
+              </>
+            ) : (
+              <button
+                onClick={() => setCurrentView('admin')}
+                title="Administration"
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '12px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  background: currentView === 'admin' ? '#eef2ff' : 'transparent',
+                  color: currentView === 'admin' ? '#4f46e5' : '#4b5563',
+                  transition: 'all 0.2s',
+                  marginTop: '16px'
+                }}
+              >
+                <i className="fas fa-shield-alt" style={{ fontSize: '18px' }}></i>
+              </button>
+            )
           )}
         </nav>
 
@@ -365,21 +724,26 @@ function AppContent() {
                 {navItems.find(i => i.id === currentView)?.label}
               </h2>
               <p style={{ fontSize: '12px', color: '#6b7280' }}>
-                {currentView === 'dashboard' && "Vue d'ensemble"}
-                {currentView === 'my-apps' && 'Vos applications personnelles'}
-                {currentView === 'environments' && 'Monitoring en temps réel'}
-                {currentView === 'progress' && "Suivi de l'avancement"}
-                {currentView === 'calendar' && 'Planification des migrations'}
-                {currentView === 'assistant' && 'Assistant intelligent partagé'}
-                {currentView === 'predictions' && 'Estimation IA de la durée'}
-                {currentView === 'import-export' && 'Importez et exportez vos données'}
-                {currentView === 'reports' && 'Générez des rapports détaillés'}
-                {currentView === 'notifications' && 'Configurez vos alertes'}
-                {currentView === 'jira' && 'Synchronisation avec Jira'}
-                {currentView === 'profile' && 'Gérez votre profil'}
-                {currentView === 'my-git' && 'Vos connexions GitLab/GitHub'}
-                {currentView === 'my-llm' && 'Configurez votre assistant IA'}
-                {currentView === 'admin' && 'Gestion des utilisateurs'}
+                {currentView === 'release-dashboard' && 'Centre de commande des releases'}
+                {currentView === 'releases' && 'Gestion complète des releases'}
+                {currentView === 'services' && 'Versions installées par environnement'}
+                {currentView === 'release-calendar' && 'Planning des déploiements'}
+                {currentView === 'teams' && 'Équipes et responsabilités'}
+                {currentView === 'dashboard' && "Vue d'ensemble de la dette technique"}
+                {currentView === 'my-apps' && 'Applications à migrer'}
+                {currentView === 'environments' && 'Monitoring des environnements'}
+                {currentView === 'progress' && 'Suivi de la progression'}
+                {currentView === 'calendar' && 'Calendrier de migration'}
+                {currentView === 'predictions' && 'Prédictions IA'}
+                {currentView === 'reports' && 'Rapports et analyses'}
+                {currentView === 'assistant' && 'Assistant intelligent'}
+                {currentView === 'import-export' && 'Import/Export de données'}
+                {currentView === 'notifications' && 'Configuration des alertes'}
+                {currentView === 'jira' && 'Intégration Jira'}
+                {currentView === 'profile' && 'Votre profil'}
+                {currentView === 'my-git' && 'Connexions Git'}
+                {currentView === 'my-llm' && 'Configuration IA'}
+                {currentView === 'admin' && 'Administration'}
               </p>
             </div>
           </div>
@@ -403,6 +767,45 @@ function AppContent() {
               <i className="fas fa-user-circle"></i>
               {sidebarOpen && currentUser?.name}
             </button>
+            {/* Bouton Export PDF */}
+            <button
+              onClick={() => exportToPDF(`Relivio-${currentView}`)}
+              title="Exporter en PDF"
+              style={{
+                padding: '8px',
+                borderRadius: '8px',
+                border: '1px solid #d1d5db',
+                background: 'white',
+                color: '#374151',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}
+            >
+              <i className="fas fa-file-pdf"></i>
+              {sidebarOpen && <span style={{ fontSize: '14px' }}>PDF</span>}
+            </button>
+
+            {/* Bouton Mode Sombre */}
+            <button
+              onClick={toggleDarkMode}
+              title={isDarkMode ? 'Mode clair' : 'Mode sombre'}
+              style={{
+                padding: '8px',
+                borderRadius: '8px',
+                border: '1px solid #d1d5db',
+                background: 'white',
+                color: isDarkMode ? '#f59e0b' : '#374151',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center'
+              }}
+            >
+              <i className={`fas ${isDarkMode ? 'fa-sun' : 'fa-moon'}`}></i>
+            </button>
+
+            {/* Bouton Déconnexion */}
             <button
               onClick={() => { setIsLoggedIn(false); setCurrentUser(null); }}
               style={{
@@ -429,6 +832,19 @@ function AppContent() {
           {renderContent()}
         </div>
       </main>
+
+      {/* Modale de recherche globale */}
+      <GlobalSearch
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        onNavigate={handleSearchNavigate}
+      />
+
+      {/* Modale des raccourcis */}
+      <ShortcutsModal
+        isOpen={isShortcutsModalOpen}
+        onClose={() => setIsShortcutsModalOpen(false)}
+      />
     </div>
   );
 }

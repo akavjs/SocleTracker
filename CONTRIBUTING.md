@@ -1,6 +1,6 @@
 # Guide de Contribution
 
-Merci de votre intérêt à contribuer à SocleTracker ! Ce document fournit les instructions pour contribuer au projet.
+Merci de votre intérêt à contribuer à Relivio ! Ce document fournit les instructions pour contribuer au projet.
 
 ## 📋 Table des matières
 
@@ -261,6 +261,6 @@ docker run -p 3000:3000 -v $(pwd):/app -v /app/node_modules socletracker-dev npm
 
 Si vous avez des questions, n'hésitez pas à :
 - Ouvrir une [issue](https://github.com/your-org/socletracker/issues)
-- Contacter l'équipe : contrib@socletracker.com
+- Contacter l'équipe : contrib@relivio.dev
 
 Merci de contribuer à SocleTracker ! 🚀

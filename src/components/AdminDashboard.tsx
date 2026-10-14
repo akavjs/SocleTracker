@@ -39,9 +39,10 @@ export default function AdminDashboard() {
   const activeCount = users.filter(u => u.status === 'active').length;
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+    <div style={{ width: '100%' }}>
       <div style={{ marginBottom: '32px' }}>
-        <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: '#111827', marginBottom: '8px' }}>
+        <h1 style={{ fontSize: 'clamp(20px, 3vw, 24px)', fontWeight: 'bold', color: '#111827', marginBottom: '8px' }}>
+          <i className="fas fa-user-shield" style={{ marginRight: '8px' }}></i>
           Dashboard Administrateur
         </h1>
         <p style={{ color: '#6b7280' }}>
