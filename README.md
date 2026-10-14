@@ -411,13 +411,161 @@ La sidebar offre deux modes de navigation :
 
 ---
 
+## 🔄 CI/CD avec GitHub Actions
+
+Relivio inclut une configuration complète GitHub Actions pour l'intégration et le déploiement continus.
+
+### Workflows disponibles
+
+#### 1. Docker Build and Push
+
+**Fichier** : `.github/workflows/docker-build.yml`
+
+**Triggers** :
+- Push vers `main` ou `develop`
+- Pull requests
+- Dispatch manuel
+
+**Jobs** :
+1. **Test** : Lint, type check, tests, build
+2. **Build** : Build Docker multi-arch, push vers GHCR, scan Trivy, SBOM
+3. **Deploy** : Déploiement Kubernetes (optionnel)
+
+**Fonctionnalités** :
+- ✅ Build multi-arch (amd64, arm64)
+- ✅ Cache Docker pour accélérer les builds
+- ✅ Scan de vulnérabilités avec Trivy
+- ✅ Génération de SBOM (Software Bill of Materials)
+- ✅ Upload des résultats vers l'onglet Security
+
+#### 2. Release
+
+**Fichier** : `.github/workflows/release.yml`
+
+**Triggers** :
+- Push de tags `v*.*.*`
+
+**Jobs** :
+1. **Release** : Création de release GitHub avec archives tar.gz et zip
+2. **Docker** : Build et push d'images Docker versionnées
+
+**Tags générés** :
+- `2.2.0` (version complète)
+- `2.2` (major.minor)
+- `2` (major)
+- `latest`
+
+### Configuration
+
+#### Secrets requis
+
+Voir `.github/SECRETS.md` pour la documentation complète.
+
+**Secrets principaux** :
+- `KUBECONFIG` : Configuration Kubernetes pour déploiement
+- `SLACK_WEBHOOK_URL` : Notifications Slack (optionnel)
+
+#### Variables d'environnement
+
+```yaml
+REGISTRY: ghcr.io
+IMAGE_NAME: ${{ github.repository }}
+```
+
+### Utilisation
+
+#### Build automatique sur push
+
+```bash
+git push origin main  # Build et push automatique vers GHCR
+```
+
+#### Release manuelle
+
+```bash
+# Créer et pousser un tag
+git tag v2.2.0
+git push origin v2.2.0
+
+# Résultat :
+# - Release GitHub créée avec archives
+# - Image Docker versionnée poussée vers GHCR
+# - Tags : 2.2.0, 2.2, 2, latest
+```
+
+#### Déploiement manuel
+
+1. Allez dans l'onglet **Actions** de votre repository
+2. Sélectionnez le workflow **Docker Build and Push**
+3. Cliquez sur **Run workflow**
+4. Choisissez l'environnement (staging/production)
+
+### Images Docker
+
+Les images sont disponibles sur GitHub Container Registry :
+
+```bash
+# Latest (branche main)
+docker pull ghcr.io/votre-org/relivio:latest
+
+# Version spécifique
+docker pull ghcr.io/votre-org/relivio:2.2.0
+
+# Branche develop
+docker pull ghcr.io/votre-org/relivio:develop
+
+# Commit spécifique
+docker pull ghcr.io/votre-org/relivio:main-abc1234
+```
+
+### Sécurité
+
+- ✅ **Scan de vulnérabilités** : Trivy scan automatique
+- ✅ **SBOM** : Software Bill of Materials généré
+- ✅ **Security tab** : Résultats uploadés dans GitHub Security
+- ✅ **Multi-arch** : Support amd64 et arm64
+- ✅ **Cache** : GitHub Actions cache pour performance
+
+### Architecture CI/CD
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    GitHub Actions Pipeline                   │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ┌──────────┐      ┌──────────┐      ┌──────────┐          │
+│  │  Test    │ ───▶ │  Build   │ ───▶ │  Deploy  │          │
+│  │  Job     │      │  Job     │      │  Job     │          │
+│  └──────────┘      └──────────┘      └──────────┘          │
+│       │                 │                 │                  │
+│       ▼                 ▼                 ▼                  │
+│  • Lint            • Docker          • Kubernetes           │
+│  • Type check      • Multi-arch      • Notifications        │
+│  • Tests           • Push GHCR       • Rollback             │
+│  • Build           • Trivy scan                             │
+│                    • SBOM                                   │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Bonnes pratiques
+
+- ✅ Utilisez des branches protégées pour `main`
+- ✅ Exigez des PR reviews avant merge
+- ✅ Activez les checks de status requis
+- ✅ Configurez des environnements pour staging/production
+- ✅ Rotatez régulièrement les secrets
+- ✅ Surveillez les scans de vulnérabilités
+
+---
+
 ## 🚀 Installation
 
 ### 1. Cloner le repository
 
 ```bash
-git clone https://github.com/votre-org/socletracker.git
-cd socletracker
+git clone https://github.com/votre-org/relivio.git
+cd relivio
 ```
 
 ### 2. Installer les dépendances

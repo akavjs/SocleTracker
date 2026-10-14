@@ -358,6 +358,104 @@ dist/assets/index-XXX.js        348.41 kB │ gzip: 80.91 kB
 
 ## 🐳 Déploiement
 
+### CI/CD avec GitHub Actions
+
+Relivio inclut une configuration complète GitHub Actions pour l'intégration et le déploiement continus.
+
+#### Workflows disponibles
+
+**1. Docker Build and Push** (`.github/workflows/docker-build.yml`)
+- **Triggers** : Push vers `main` ou `develop`, PR, dispatch manuel
+- **Jobs** :
+  - `test` : Tests, lint, type check, build
+  - `build` : Build Docker multi-arch (amd64, arm64), push vers GHCR
+  - `deploy` : Déploiement Kubernetes (optionnel)
+- **Sécurité** : Scan Trivy, SBOM, upload vers Security tab
+- **Cache** : GitHub Actions cache pour accélérer les builds
+
+**2. Release** (`.github/workflows/release.yml`)
+- **Triggers** : Push de tags `v*.*.*`
+- **Jobs** :
+  - `release` : Création de release GitHub avec archives
+  - `docker` : Build et push d'images Docker versionnées
+- **Tags** : version, major.minor, major, latest
+
+#### Architecture CI/CD
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    GitHub Actions Pipeline                   │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ┌──────────┐      ┌──────────┐      ┌──────────┐          │
+│  │  Test    │ ───▶ │  Build   │ ───▶ │  Deploy  │          │
+│  │  Job     │      │  Job     │      │  Job     │          │
+│  └──────────┘      └──────────┘      └──────────┘          │
+│       │                 │                 │                  │
+│       ▼                 ▼                 ▼                  │
+│  • Lint            • Docker          • Kubernetes           │
+│  • Type check      • Multi-arch      • Notifications        │
+│  • Tests           • Push GHCR       • Rollback             │
+│  • Build           • Trivy scan                             │
+│                    • SBOM                                   │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+#### Configuration
+
+**Secrets requis** (voir `.github/SECRETS.md`) :
+- `KUBECONFIG` : Configuration Kubernetes pour déploiement
+- `SLACK_WEBHOOK_URL` : Notifications Slack (optionnel)
+
+**Variables d'environnement** :
+```yaml
+REGISTRY: ghcr.io
+IMAGE_NAME: ${{ github.repository }}
+```
+
+#### Utilisation
+
+**Build automatique sur push** :
+```bash
+git push origin main  # Build et push automatique
+```
+
+**Release manuelle** :
+```bash
+git tag v2.2.0
+git push origin v2.2.0  # Crée une release avec image versionnée
+```
+
+**Déploiement manuel** :
+1. Allez dans l'onglet **Actions** de votre repository
+2. Sélectionnez le workflow **Docker Build and Push**
+3. Cliquez sur **Run workflow**
+4. Choisissez l'environnement (staging/production)
+
+#### Images Docker
+
+Les images sont disponibles sur GitHub Container Registry :
+
+```bash
+# Latest (branche main)
+docker pull ghcr.io/votre-org/relivio:latest
+
+# Version spécifique
+docker pull ghcr.io/votre-org/relivio:2.2.0
+
+# Branche develop
+docker pull ghcr.io/votre-org/relivio:develop
+```
+
+#### Sécurité
+
+- ✅ Scan de vulnérabilités automatique avec Trivy
+- ✅ Génération de SBOM (Software Bill of Materials)
+- ✅ Résultats uploadés dans l'onglet Security de GitHub
+- ✅ Images multi-arch (amd64, arm64)
+- ✅ Cache Docker pour accélérer les builds
+
 ### Docker multi-stage
 
 ```dockerfile
